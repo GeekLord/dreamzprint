@@ -1,6 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Info, HelpCircle, QuestionMark } from "lucide-react";
+import { Info, HelpCircle } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
@@ -65,7 +65,7 @@ const FAQ = () => {
         {/* FAQ Section */}
         <Card>
           <CardHeader className="flex flex-row items-center gap-2">
-            <QuestionMark className="h-6 w-6 text-primary" />
+            <HelpCircle className="h-6 w-6 text-primary" />
             <CardTitle>Frequently Asked Questions</CardTitle>
           </CardHeader>
           <CardContent>

@@ -18,7 +18,7 @@ const Login = () => {
         // Check if user is admin
         const { data: profile } = await supabase
           .from('profiles')
-          .select('is_admin')
+          .select('*')
           .eq('id', session.user.id)
           .single();
 
@@ -41,7 +41,7 @@ const Login = () => {
         // Check if user is admin
         const { data: profile } = await supabase
           .from('profiles')
-          .select('is_admin')
+          .select('*')
           .eq('id', session.user.id)
           .single();
 

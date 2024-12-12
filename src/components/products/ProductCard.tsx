@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import type { Product } from "@/types/product";
 import { useState, useEffect, useRef } from "react";
-import { Canvas as FabricCanvas, Image as FabricImage } from "fabric";
+import { fabric } from "fabric";
 
 interface ProductCardProps {
   product: Product;
@@ -12,12 +12,12 @@ interface ProductCardProps {
 export const ProductCard = ({ product, selectedDesign, onOrder }: ProductCardProps) => {
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [canvas, setCanvas] = useState<FabricCanvas | null>(null);
+  const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
 
   useEffect(() => {
     if (!canvasRef.current) return;
 
-    const fabricCanvas = new FabricCanvas(canvasRef.current, {
+    const fabricCanvas = new fabric.Canvas(canvasRef.current, {
       width: 400,
       height: 400,
       backgroundColor: '#ffffff',
@@ -26,13 +26,16 @@ export const ProductCard = ({ product, selectedDesign, onOrder }: ProductCardPro
     setCanvas(fabricCanvas);
 
     // Load the product image
-    FabricImage.fromURL(product.image, (img) => {
-      img.scaleToWidth(fabricCanvas.width!);
-      img.selectable = false; // Make product image non-interactive
+    fabric.Image.fromURL(product.image, (img) => {
+      img.scaleToWidth(fabricCanvas.getWidth());
+      img.set({
+        selectable: false,
+        evented: false,
+      });
       fabricCanvas.add(img);
       fabricCanvas.centerObject(img);
       fabricCanvas.renderAll();
-    }, { crossOrigin: 'anonymous' });
+    });
 
     return () => {
       fabricCanvas.dispose();
@@ -44,20 +47,24 @@ export const ProductCard = ({ product, selectedDesign, onOrder }: ProductCardPro
     if (!canvas || !selectedDesign) return;
 
     // Remove any existing design images
-    const existingDesigns = canvas.getObjects().filter(obj => obj.data?.type === 'design');
+    const existingDesigns = canvas.getObjects().filter(obj => {
+      const metadata = (obj as fabric.Object & { data?: { type: string } }).data;
+      return metadata?.type === 'design';
+    });
     existingDesigns.forEach(obj => canvas.remove(obj));
 
     // Add new design image
-    FabricImage.fromURL(selectedDesign, (img) => {
-      img.scaleToWidth(canvas.width! * 0.3); // Scale design to 30% of canvas width
+    fabric.Image.fromURL(selectedDesign, (img) => {
+      img.scaleToWidth(canvas.getWidth() * 0.3); // Scale design to 30% of canvas width
       img.set({
-        left: canvas.width! * 0.35,
-        top: canvas.height! * 0.35,
+        left: canvas.getWidth() * 0.35,
+        top: canvas.getHeight() * 0.35,
         data: { type: 'design' },
+        selectable: true,
+        evented: true,
       });
       
       // Make design interactive
-      img.selectable = true;
       img.setControlsVisibility({
         mt: true, // middle top
         mb: true, // middle bottom
@@ -69,7 +76,7 @@ export const ProductCard = ({ product, selectedDesign, onOrder }: ProductCardPro
       canvas.add(img);
       canvas.setActiveObject(img);
       canvas.renderAll();
-    }, { crossOrigin: 'anonymous' });
+    });
   }, [selectedDesign, canvas]);
 
   return (

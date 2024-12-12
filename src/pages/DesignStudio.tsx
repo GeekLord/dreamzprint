@@ -30,26 +30,42 @@ const DesignStudio = () => {
       return;
     }
 
+    const apiKey = localStorage.getItem("runware_api_key");
+    if (!apiKey) {
+      toast.error("API key is required to improve prompts");
+      return;
+    }
+
     setIsImprovingPrompt(true);
     try {
-      const improvedPrompt = await fetch("https://api.runware.ai/v1/improve-prompt", {
+      const response = await fetch("https://api.runware.ai/v1/improve-prompt", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("runware_api_key")}`,
+          "Authorization": `Bearer ${apiKey}`,
         },
         body: JSON.stringify({ prompt }),
-      }).then(res => res.json());
+      });
 
-      if (improvedPrompt.error) {
-        throw new Error(improvedPrompt.error);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to improve prompt");
       }
 
-      setPrompt(improvedPrompt.improvedPrompt);
+      if (!data.improvedPrompt) {
+        throw new Error("Invalid response from server");
+      }
+
+      setPrompt(data.improvedPrompt);
       toast.success("Prompt improved successfully!");
     } catch (error) {
       console.error("Error improving prompt:", error);
-      toast.error("Failed to improve prompt. Please try again.");
+      toast.error(error instanceof Error ? error.message : "Failed to improve prompt. Please try again.");
+      
+      if (error instanceof Error && error.message.includes("Missing API Key")) {
+        localStorage.removeItem("runware_api_key");
+      }
     } finally {
       setIsImprovingPrompt(false);
     }

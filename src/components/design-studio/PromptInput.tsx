@@ -27,11 +27,16 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
     try {
       console.log("Calling generate-product-prompt with:", { description: prompt, productType });
 
+      const { data: { session } } = await supabase.auth.getSession();
+      
       const { data, error } = await supabase.functions.invoke('generate-product-prompt', {
         body: {
           description: prompt,
           productType: productType,
-        }
+        },
+        headers: session?.access_token ? {
+          Authorization: `Bearer ${session.access_token}`
+        } : undefined
       });
 
       console.log("Response from generate-product-prompt:", { data, error });

@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import type { Product } from "@/types/product";
 import { useEffect, useRef, useState } from "react";
-import { Canvas as FabricCanvas, Image as FabricImage, type FabricObject } from "fabric";
+import { Canvas as FabricCanvas, Image as FabricImage } from "fabric";
 import { toast } from "sonner";
 
 interface ProductCardProps {
@@ -28,16 +28,18 @@ export const ProductCard = ({ product, selectedDesign, onOrder }: ProductCardPro
     // Load the product image
     FabricImage.fromURL(product.image, {
       crossOrigin: 'anonymous',
-      callback: (img) => {
-        img.scaleToWidth(canvas.width!);
-        img.scaleToHeight(canvas.height!);
-        img.set({
-          selectable: false,
-          evented: false,
-        });
-        canvas.add(img);
-        canvas.renderAll();
-      }
+      scaleX: 1,
+      scaleY: 1,
+      selectable: false,
+      evented: false,
+    }).then((img) => {
+      img.scaleToWidth(canvas.width!);
+      img.scaleToHeight(canvas.height!);
+      canvas.add(img);
+      canvas.renderAll();
+    }).catch(error => {
+      console.error('Error loading product image:', error);
+      toast.error("Error loading product image");
     });
 
     setFabricCanvas(canvas);
@@ -52,7 +54,7 @@ export const ProductCard = ({ product, selectedDesign, onOrder }: ProductCardPro
     if (!fabricCanvas || !selectedDesign) return;
 
     // Remove any existing design images
-    const existingDesigns = fabricCanvas.getObjects().filter((obj: FabricObject) => {
+    const existingDesigns = fabricCanvas.getObjects().filter((obj) => {
       return obj.get('customType') === 'design';
     });
     existingDesigns.forEach(obj => fabricCanvas.remove(obj));
@@ -60,21 +62,19 @@ export const ProductCard = ({ product, selectedDesign, onOrder }: ProductCardPro
     // Add new design image
     FabricImage.fromURL(selectedDesign, {
       crossOrigin: 'anonymous',
-      callback: (img) => {
-        const scale = 0.5;
-        img.set({
-          left: fabricCanvas.width! * 0.25,
-          top: fabricCanvas.height! * 0.25,
-          scaleX: scale,
-          scaleY: scale,
-          customType: 'design',
-        });
-        fabricCanvas.add(img);
-        fabricCanvas.setActiveObject(img);
-        fabricCanvas.renderAll();
-        
-        toast("You can now drag and resize the design!");
-      }
+      scaleX: 0.5,
+      scaleY: 0.5,
+      left: fabricCanvas.width! * 0.25,
+      top: fabricCanvas.height! * 0.25,
+      customType: 'design',
+    }).then((img) => {
+      fabricCanvas.add(img);
+      fabricCanvas.setActiveObject(img);
+      fabricCanvas.renderAll();
+      toast("You can now drag and resize the design!");
+    }).catch(error => {
+      console.error('Error loading design:', error);
+      toast.error("Error loading design image");
     });
   }, [selectedDesign, fabricCanvas]);
 

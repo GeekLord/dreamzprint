@@ -70,9 +70,13 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="t-shirt">T-Shirt</SelectItem>
-            <SelectItem value="mug">Mug</SelectItem>
             <SelectItem value="hoodie">Hoodie</SelectItem>
+            <SelectItem value="sweatshirt">Sweatshirt</SelectItem>
             <SelectItem value="phone case">Phone Case</SelectItem>
+            <SelectItem value="wall art">Wall Art</SelectItem>
+            <SelectItem value="photo book">Photo Book</SelectItem>
+            <SelectItem value="canvas print">Canvas Print</SelectItem>
+            <SelectItem value="tote bag">Tote Bag</SelectItem>
           </SelectContent>
         </Select>
         <Button

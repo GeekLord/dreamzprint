@@ -2,9 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Sparkles } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 
 interface PromptInputProps {
   prompt: string;
@@ -16,6 +17,20 @@ interface PromptInputProps {
 const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
   const [productType, setProductType] = useState("t-shirt");
   const [isGeneratingPrompt, setIsGeneratingPrompt] = useState(false);
+  const navigate = useNavigate();
+
+  // Check authentication status when component mounts
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        toast.error("Please sign in to use this feature");
+        navigate("/login");
+      }
+    };
+    
+    checkAuth();
+  }, [navigate]);
 
   const generateProductPrompt = async () => {
     if (!prompt.trim()) {
@@ -28,17 +43,19 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
       console.log("Generating product-optimized prompt for:", { description: prompt, productType });
       
       // Get the current session
-      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      const { data: { session } } = await supabase.auth.getSession();
       
-      if (sessionError) {
-        throw new Error('Failed to get session');
+      if (!session) {
+        toast.error("Please sign in to use this feature");
+        navigate("/login");
+        return;
       }
 
       const { data, error: secretError } = await supabase.functions.invoke('get-secret', {
         body: { key: 'GEMINI_API_KEY' },
-        headers: session?.access_token ? {
+        headers: {
           Authorization: `Bearer ${session.access_token}`
-        } : undefined
+        }
       });
 
       if (secretError || !data?.GEMINI_API_KEY) {

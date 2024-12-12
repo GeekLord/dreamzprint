@@ -27,11 +27,22 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
     try {
       console.log("Generating product-optimized prompt for:", { description: prompt, productType });
       
-      const { data: { key }, error: secretError } = await supabase.functions.invoke('get-secret', {
-        body: { name: 'GEMINI_API_KEY' }
+      // Get the current session
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      
+      if (sessionError) {
+        throw new Error('Failed to get session');
+      }
+
+      const { data, error: secretError } = await supabase.functions.invoke('get-secret', {
+        body: { key: 'GEMINI_API_KEY' },
+        headers: session?.access_token ? {
+          Authorization: `Bearer ${session.access_token}`
+        } : undefined
       });
 
-      if (secretError || !key) {
+      if (secretError || !data?.GEMINI_API_KEY) {
+        console.error('Secret error:', secretError);
         throw new Error('Failed to retrieve API key');
       }
 
@@ -40,7 +51,7 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
       Consider contrast, readability, and printing limitations.`;
 
       const response = await fetch(
-        'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=' + key,
+        'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=' + data.GEMINI_API_KEY,
         {
           method: 'POST',
           headers: {
@@ -62,14 +73,14 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
         throw new Error(`Failed to generate prompt: ${response.statusText}`);
       }
 
-      const data = await response.json();
-      console.log('Received response from Gemini:', data);
+      const responseData = await response.json();
+      console.log('Received response from Gemini:', responseData);
 
-      if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
+      if (!responseData.candidates?.[0]?.content?.parts?.[0]?.text) {
         throw new Error('Invalid response format from Gemini API');
       }
 
-      const improvedPrompt = data.candidates[0].content.parts[0].text.trim();
+      const improvedPrompt = responseData.candidates[0].content.parts[0].text.trim();
       setPrompt(improvedPrompt);
       toast.success("Generated product-optimized prompt!");
     } catch (error) {

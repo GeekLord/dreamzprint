@@ -13,41 +13,108 @@ const TermsOfService = () => {
             <h2>Agreement to Terms</h2>
             <p>
               By accessing and using DreamzPrint's services, you agree to be bound by these Terms of
-              Service and all applicable laws and regulations.
+              Service and all applicable laws and regulations. If you do not agree with any of these terms, you
+              are prohibited from using or accessing our services.
             </p>
           </section>
 
           <section className="mb-8">
-            <h2>Use of Service</h2>
+            <h2>Account Registration and Security</h2>
             <p>
-              You agree to use our service only for lawful purposes and in accordance with these Terms.
-              You are responsible for maintaining the confidentiality of your account information.
+              When you create an account with us, you must provide accurate and complete information. You are responsible for:
             </p>
+            <ul>
+              <li>Maintaining the confidentiality of your account credentials</li>
+              <li>All activities that occur under your account</li>
+              <li>Notifying us immediately of any unauthorized access</li>
+              <li>Ensuring your account information is up to date</li>
+            </ul>
           </section>
 
           <section className="mb-8">
-            <h2>Intellectual Property</h2>
+            <h2>Intellectual Property Rights</h2>
             <p>
-              All content, designs, and materials created through our service are protected by
-              copyright and other intellectual property laws. You retain ownership of your original
-              designs but grant us license to use them for order fulfillment.
+              Our platform and its original content, features, and functionality are owned by DreamzPrint and are protected by:
             </p>
+            <ul>
+              <li>International copyright laws</li>
+              <li>Trademark laws</li>
+              <li>Other intellectual property rights</li>
+            </ul>
+            <p>
+              When you upload designs or content to our platform:
+            </p>
+            <ul>
+              <li>You retain ownership of your original designs</li>
+              <li>You grant us a license to use them for order fulfillment</li>
+              <li>You warrant that you have the right to use all content</li>
+              <li>You agree not to violate others' intellectual property rights</li>
+            </ul>
           </section>
 
           <section className="mb-8">
-            <h2>Payment and Pricing</h2>
+            <h2>Product Orders and Payment</h2>
             <p>
-              All prices are subject to change without notice. You agree to pay all charges at the
-              prices in effect when you place your order. Payment must be made in full before order
-              processing begins.
+              When placing orders through our platform:
             </p>
+            <ul>
+              <li>All prices are subject to change without notice</li>
+              <li>We reserve the right to refuse any order</li>
+              <li>Payment must be made in full before production begins</li>
+              <li>Shipping costs are calculated at checkout</li>
+              <li>Taxes will be applied according to local regulations</li>
+            </ul>
+          </section>
+
+          <section className="mb-8">
+            <h2>Custom Orders and Design Services</h2>
+            <p>
+              For custom design services:
+            </p>
+            <ul>
+              <li>All designs must be approved before production</li>
+              <li>Revisions may be limited based on the service package</li>
+              <li>Rush orders may incur additional fees</li>
+              <li>Design files are provided in specified formats only</li>
+            </ul>
+          </section>
+
+          <section className="mb-8">
+            <h2>Prohibited Activities</h2>
+            <p>
+              You may not engage in any of the following activities:
+            </p>
+            <ul>
+              <li>Uploading illegal or offensive content</li>
+              <li>Attempting to breach website security</li>
+              <li>Using the service for unauthorized commercial purposes</li>
+              <li>Impersonating others or providing false information</li>
+              <li>Interfering with service operation</li>
+            </ul>
+          </section>
+
+          <section className="mb-8">
+            <h2>Limitation of Liability</h2>
+            <p>
+              DreamzPrint shall not be liable for:
+            </p>
+            <ul>
+              <li>Indirect or consequential damages</li>
+              <li>Loss of profits or data</li>
+              <li>Service interruptions</li>
+              <li>Third-party actions</li>
+              <li>Circumstances beyond our reasonable control</li>
+            </ul>
           </section>
 
           <section>
-            <h2>Modifications to Terms</h2>
+            <h2>Changes to Terms</h2>
             <p>
-              We reserve the right to modify these terms at any time. Your continued use of our
-              services following any changes constitutes acceptance of those changes.
+              We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting.
+              Continued use of our services constitutes acceptance of the modified terms.
+            </p>
+            <p>
+              For questions about these terms, contact us at: legal@dreamzprint.com
             </p>
           </section>
         </div>

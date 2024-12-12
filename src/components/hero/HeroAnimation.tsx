@@ -1,16 +1,24 @@
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { useRef, Suspense } from "react";
+import { useRef, Suspense, Component, ReactNode } from "react";
 import * as THREE from "three";
 
-// Error boundary component
-class ErrorBoundary extends React.Component {
-  constructor(props) {
+// Error boundary component with proper type definitions
+interface ErrorBoundaryProps {
+  children: ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+}
+
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError(error: Error) {
     return { hasError: true };
   }
 

@@ -25,7 +25,7 @@ const DesignStudio = () => {
       // For now, we'll use a temporary input for the API key
       const apiKey = localStorage.getItem("runware_api_key");
       if (!apiKey) {
-        const key = prompt("Please enter your Runware API key:");
+        const key = window.prompt("Please enter your Runware API key:");
         if (key) {
           localStorage.setItem("runware_api_key", key);
         } else {

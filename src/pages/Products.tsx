@@ -9,28 +9,100 @@ const products = [
   {
     category: "Apparel",
     items: [
-      { title: "Custom T-Shirts", description: "Create your own unique t-shirt designs", price: "From $24.99" },
-      { title: "Hoodies", description: "Comfortable and stylish custom hoodies", price: "From $39.99" },
-      { title: "Tank Tops", description: "Perfect for summer and workouts", price: "From $19.99" },
-      { title: "Long Sleeve Shirts", description: "Year-round comfort with your designs", price: "From $29.99" }
+      { 
+        title: "Custom T-Shirts", 
+        description: "Create your own unique t-shirt designs", 
+        price: "From $24.99",
+        image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&q=80",
+        overlayPosition: { top: "25%", left: "25%", width: "50%" }
+      },
+      { 
+        title: "Hoodies", 
+        description: "Comfortable and stylish custom hoodies", 
+        price: "From $39.99",
+        image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80",
+        overlayPosition: { top: "25%", left: "25%", width: "50%" }
+      },
+      { 
+        title: "Tank Tops", 
+        description: "Perfect for summer and workouts", 
+        price: "From $19.99",
+        image: "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?auto=format&fit=crop&q=80",
+        overlayPosition: { top: "25%", left: "25%", width: "50%" }
+      },
+      { 
+        title: "Long Sleeve Shirts", 
+        description: "Year-round comfort with your designs", 
+        price: "From $29.99",
+        image: "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&q=80",
+        overlayPosition: { top: "25%", left: "25%", width: "50%" }
+      }
     ]
   },
   {
     category: "Home Decor",
     items: [
-      { title: "Wall Art", description: "Transform your space with custom prints", price: "From $29.99" },
-      { title: "Canvas Prints", description: "Gallery-quality canvas prints", price: "From $49.99" },
-      { title: "Throw Pillows", description: "Add personality to any room", price: "From $24.99" },
-      { title: "Photo Blankets", description: "Cozy custom blankets", price: "From $59.99" }
+      { 
+        title: "Wall Art", 
+        description: "Transform your space with custom prints", 
+        price: "From $29.99",
+        image: "https://images.unsplash.com/photo-1513519245088-0e12902e35a6?auto=format&fit=crop&q=80",
+        overlayPosition: { top: "10%", left: "10%", width: "80%" }
+      },
+      { 
+        title: "Canvas Prints", 
+        description: "Gallery-quality canvas prints", 
+        price: "From $49.99",
+        image: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&q=80",
+        overlayPosition: { top: "10%", left: "10%", width: "80%" }
+      },
+      { 
+        title: "Throw Pillows", 
+        description: "Add personality to any room", 
+        price: "From $24.99",
+        image: "https://images.unsplash.com/photo-1584100936595-c0654b55a2e6?auto=format&fit=crop&q=80",
+        overlayPosition: { top: "20%", left: "20%", width: "60%" }
+      },
+      { 
+        title: "Photo Blankets", 
+        description: "Cozy custom blankets", 
+        price: "From $59.99",
+        image: "https://images.unsplash.com/photo-1580500325788-5cc2e0f70ecd?auto=format&fit=crop&q=80",
+        overlayPosition: { top: "20%", left: "20%", width: "60%" }
+      }
     ]
   },
   {
     category: "Accessories",
     items: [
-      { title: "Phone Cases", description: "Protect your device with style", price: "From $19.99" },
-      { title: "Tote Bags", description: "Eco-friendly custom bags", price: "From $16.99" },
-      { title: "Laptop Sleeves", description: "Stylish protection for your tech", price: "From $29.99" },
-      { title: "Mouse Pads", description: "Custom desk accessories", price: "From $14.99" }
+      { 
+        title: "Phone Cases", 
+        description: "Protect your device with style", 
+        price: "From $19.99",
+        image: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?auto=format&fit=crop&q=80",
+        overlayPosition: { top: "15%", left: "15%", width: "70%" }
+      },
+      { 
+        title: "Tote Bags", 
+        description: "Eco-friendly custom bags", 
+        price: "From $16.99",
+        image: "https://images.unsplash.com/photo-1597484662317-9bd7bdda2907?auto=format&fit=crop&q=80",
+        overlayPosition: { top: "20%", left: "20%", width: "60%" }
+      },
+      { 
+        title: "Laptop Sleeves", 
+        description: "Stylish protection for your tech", 
+        price: "From $29.99",
+        image: "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&q=80",
+        overlayPosition: { top: "25%", left: "25%", width: "50%" }
+      },
+      { 
+        title: "Mouse Pads", 
+        description: "Custom desk accessories", 
+        price: "From $14.99",
+        image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&q=80",
+        overlayPosition: { top: "10%", left: "10%", width: "80%" }
+      }
     ]
   }
 ];
@@ -82,20 +154,32 @@ const Products = () => {
                     <h3 className="text-xl font-semibold mb-2">{product.title}</h3>
                     <p className="text-gray-600 mb-4">{product.description}</p>
                     <p className="text-primary font-medium mb-4">{product.price}</p>
-                    {selectedDesign && (
-                      <div className="space-y-4">
-                        <div className="aspect-square rounded-lg overflow-hidden bg-gray-100">
+                    <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-100 mb-4">
+                      <img 
+                        src={product.image} 
+                        alt={product.title}
+                        className="w-full h-full object-cover"
+                      />
+                      {selectedDesign && (
+                        <div 
+                          className="absolute" 
+                          style={{
+                            top: product.overlayPosition.top,
+                            left: product.overlayPosition.left,
+                            width: product.overlayPosition.width,
+                          }}
+                        >
                           <img 
                             src={selectedDesign} 
-                            alt="Your design" 
-                            className="w-full h-full object-cover"
+                            alt="Your design"
+                            className="w-full h-full object-contain"
                           />
                         </div>
-                        <Button className="w-full">
-                          Order with Custom Design
-                        </Button>
-                      </div>
-                    )}
+                      )}
+                    </div>
+                    <Button className="w-full">
+                      {selectedDesign ? 'Order with Custom Design' : 'Create Your Design'}
+                    </Button>
                   </div>
                 ))}
               </div>

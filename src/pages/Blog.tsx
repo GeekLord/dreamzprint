@@ -4,6 +4,8 @@ import { BlogCard } from "@/components/blog/BlogCard";
 import { sampleBlogPosts } from "@/types/blog";
 
 const Blog = () => {
+  console.log("Total blog posts:", sampleBlogPosts.length);
+  
   return (
     <div className="min-h-screen">
       <Navigation />

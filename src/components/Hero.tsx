@@ -3,37 +3,43 @@ import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
-    <div className="relative overflow-hidden bg-gradient-to-b from-white to-gray-50 pt-20">
+    <div className="relative overflow-hidden bg-gradient-to-br from-[#9b87f5] via-[#E5DEFF] to-[#FDE1D3] pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <div className="text-center">
+        <div className="text-center relative z-10">
           <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-            <span className="block">Transform Your Ideas into</span>
-            <span className="block bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            <span className="block text-white drop-shadow-lg">Transform Your Ideas into</span>
+            <span className="block bg-gradient-to-r from-[#1A1F2C] to-[#6E59A5] bg-clip-text text-transparent">
               Beautiful Prints
             </span>
           </h1>
-          <p className="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
+          <p className="mt-3 max-w-md mx-auto text-base text-white sm:text-lg md:mt-5 md:text-xl md:max-w-3xl font-medium drop-shadow">
             Create stunning designs with AI-powered tools and bring them to life on premium products.
             From t-shirts to wall art, make your imagination tangible.
           </p>
-          <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
+          <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8 gap-4">
             <Link
               to="/design"
-              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary hover:bg-primary/90 transition-colors duration-300"
+              className="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-full text-white bg-[#8B5CF6] hover:bg-[#7C3AED] transition-all duration-300 transform hover:scale-105 shadow-lg"
             >
               Start Creating
-              <ArrowRight className="ml-2 h-5 w-5" />
+              <ArrowRight className="ml-2 h-5 w-5 animate-bounce" />
+            </Link>
+            <Link
+              to="/products"
+              className="mt-3 sm:mt-0 inline-flex items-center px-8 py-3 border-2 border-white text-base font-medium rounded-full text-white hover:bg-white hover:text-[#8B5CF6] transition-all duration-300 transform hover:scale-105 shadow-lg"
+            >
+              Browse Products
             </Link>
           </div>
         </div>
       </div>
       
-      {/* Decorative blob shapes */}
-      <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 w-96 h-96">
-        <div className="absolute w-full h-full bg-primary/20 rounded-full filter blur-3xl animate-float" />
+      {/* Animated background elements */}
+      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-64 h-64">
+        <div className="absolute w-full h-full bg-[#D946EF]/20 rounded-full filter blur-3xl animate-float" />
       </div>
-      <div className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-96 h-96">
-        <div className="absolute w-full h-full bg-secondary/20 rounded-full filter blur-3xl animate-float" />
+      <div className="absolute top-3/4 right-1/4 translate-x-1/2 translate-y-1/2 w-64 h-64">
+        <div className="absolute w-full h-full bg-[#0EA5E9]/20 rounded-full filter blur-3xl animate-float" />
       </div>
     </div>
   );

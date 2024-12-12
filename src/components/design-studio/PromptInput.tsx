@@ -143,7 +143,7 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
             <SelectItem value="sweatshirt">Sweatshirt</SelectItem>
             <SelectItem value="phone case">Phone Case</SelectItem>
             <SelectItem value="wall art">Wall Art</SelectItem>
-            <SelectItem value="photo book">Photo Book</SelectItem>
+            <SelectItem value="photo print">Photo Print</SelectItem>
             <SelectItem value="canvas print">Canvas Print</SelectItem>
             <SelectItem value="tote bag">Tote Bag</SelectItem>
           </SelectContent>
@@ -158,14 +158,6 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
           AI Idea Optimizer
         </Button>
       </div>
-      <Textarea
-        placeholder="Describe your design idea..."
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-        className="min-h-[100px]"
-      />
-
-      {/* Image Upload Section */}
       <div className="space-y-2">
         <label className="block text-sm font-medium">
           Upload Inspiration Image (Optional)

@@ -1,59 +1,47 @@
-import { Paintbrush, Zap, Shield, Truck } from "lucide-react";
-
 const Features = () => {
   const features = [
     {
-      icon: <Paintbrush className="h-6 w-6" />,
       title: "AI-Powered Design",
-      description: "Create unique designs with our intelligent design assistant"
+      description: "Create unique designs instantly with our advanced AI technology",
+      icon: "/lovable-uploads/079dd5ab-c6a7-42a5-b758-91ed0076b902.png"
     },
     {
-      icon: <Zap className="h-6 w-6" />,
-      title: "Instant Preview",
-      description: "See your designs come to life in real-time on our products"
+      title: "Premium Quality",
+      description: "High-quality materials and printing for lasting products",
+      icon: "/lovable-uploads/2ecb0533-68aa-49ea-be4c-90ab318cc2fa.png"
     },
     {
-      icon: <Shield className="h-6 w-6" />,
-      title: "Quality Guaranteed",
-      description: "Premium materials and expert printing for lasting quality"
-    },
-    {
-      icon: <Truck className="h-6 w-6" />,
-      title: "Fast Delivery",
-      description: "Quick processing and reliable shipping worldwide"
+      title: "Easy Customization",
+      description: "Simple tools to personalize your designs exactly how you want",
+      icon: "/lovable-uploads/2dc945e6-b664-46da-8a5c-24e2926fd585.png"
     }
   ];
 
   return (
-    <div className="py-24 bg-gradient-to-b from-white to-[#F1F0FB]">
+    <div className="bg-white py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
-            Why Choose DreamzPrint?
-          </h2>
-          <p className="mt-4 text-xl text-gray-600">
+          <h2 className="text-3xl font-bold text-gray-900">Why Choose Us</h2>
+          <p className="mt-4 text-lg text-gray-600">
             Experience the perfect blend of technology and creativity
           </p>
         </div>
 
-        <div className="mt-20 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-20 grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, index) => (
-            <div
-              key={index}
-              className="relative group bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-            >
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-[#9b87f5] to-[#6E59A5] rounded-xl opacity-0 group-hover:opacity-100 transition duration-300 blur-lg" />
-              <div className="relative bg-white p-6 rounded-xl">
-                <div className="w-12 h-12 bg-[#F1F0FB] rounded-lg flex items-center justify-center text-[#6E59A5] mb-4">
-                  {feature.icon}
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600">
-                  {feature.description}
-                </p>
+            <div key={index} className="relative">
+              <div className="aspect-square mb-6">
+                <img
+                  src={feature.icon}
+                  alt={feature.title}
+                  className="w-full h-full object-cover rounded-lg shadow-md"
+                  loading="lazy"
+                  width={400}
+                  height={400}
+                />
               </div>
+              <h3 className="text-xl font-semibold text-gray-900">{feature.title}</h3>
+              <p className="mt-2 text-gray-600">{feature.description}</p>
             </div>
           ))}
         </div>

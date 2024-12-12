@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { useCurrency } from "@/contexts/CurrencyContext";
 
 const products = [
   {
@@ -61,8 +60,6 @@ const products = [
 ];
 
 const FeaturedProducts = () => {
-  const { formatPrice } = useCurrency();
-
   return (
     <div className="bg-gradient-to-b from-white to-gray-50 py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -91,9 +88,7 @@ const FeaturedProducts = () => {
                 <h3 className="text-lg font-medium text-gray-900">
                   {product.name}
                 </h3>
-                <p className="mt-1 text-sm text-gray-500">
-                  {formatPrice(product.price.replace("From ", ""))}
-                </p>
+                <p className="mt-1 text-sm text-gray-500">{product.price}</p>
                 <p className="mt-2 text-sm text-gray-600">{product.description}</p>
               </div>
             </Link>

@@ -53,7 +53,7 @@ const products = [
   {
     id: 8,
     name: "Tote Bags",
-    image: "https://images.unsplash.com/photo-1597484662317-9bd7bdda2907?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/823ad244-bbd5-4d5c-9ccc-78deda4feaa7.png",
     price: "From $16.99",
     description: "Eco-friendly custom tote bags"
   }

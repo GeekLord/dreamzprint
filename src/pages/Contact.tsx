@@ -57,8 +57,8 @@ const Contact = () => {
     {
       icon: MapPin,
       title: "Address",
-      content: "123 Creative Street",
-      description: "San Francisco, CA 94105",
+      content: "Dreamz Print, 11923 NE Sumner St",
+      description: "STE 769554, Portland, Oregon, 97220",
     },
     {
       icon: Clock,

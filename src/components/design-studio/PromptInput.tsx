@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Sparkles } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -31,13 +32,15 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
     try {
       console.log("Calling generate-product-prompt with:", { description: prompt, productType });
       
+      const { data: { session } } = await supabase.auth.getSession();
+      
       const { data, error } = await supabase.functions.invoke('generate-product-prompt', {
         body: {
           description: prompt,
           productType: productType,
         },
         headers: {
-          Authorization: `Bearer ${supabase.auth.session()?.access_token}`
+          Authorization: `Bearer ${session?.access_token}`
         }
       });
 
@@ -78,6 +81,15 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
             <SelectItem value="phone case">Phone Case</SelectItem>
           </SelectContent>
         </Select>
+        <Button
+          variant="secondary"
+          onClick={generateProductPrompt}
+          disabled={isGeneratingPrompt || !prompt.trim()}
+          className="flex-shrink-0"
+        >
+          <Sparkles className={`h-4 w-4 mr-2 ${isGeneratingPrompt ? 'animate-pulse' : ''}`} />
+          Optimize for Product
+        </Button>
       </div>
       <Textarea
         placeholder="Describe your design idea..."

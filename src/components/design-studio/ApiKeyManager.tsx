@@ -1,32 +1,37 @@
 import { Button } from "@/components/ui/button";
 import { Key } from "lucide-react";
 import { toast } from "sonner";
+import { createClient } from '@supabase/supabase-js';
 
 interface ApiKeyManagerProps {
   onApiKeyUpdate: () => void;
   disabled?: boolean;
 }
 
-const DEFAULT_API_KEY = "YOUR_DEFAULT_RUNWARE_API_KEY"; // Replace this with your actual API key
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+);
 
 const ApiKeyManager = ({ onApiKeyUpdate, disabled }: ApiKeyManagerProps) => {
-  const handleResetApiKey = () => {
-    // If there's no API key stored, use the default one
-    if (!localStorage.getItem("runware_api_key")) {
-      localStorage.setItem("runware_api_key", DEFAULT_API_KEY);
-      toast.success("Using default API key");
-      onApiKeyUpdate();
-      return;
-    }
+  const handleResetApiKey = async () => {
+    try {
+      const { data: { RUNWARE_API_KEY }, error } = await supabase.functions.invoke('get-secret', {
+        body: { key: 'RUNWARE_API_KEY' }
+      });
 
-    // Otherwise, allow manual input for advanced users
-    const key = window.prompt(
-      "Please enter your Runware API key (get one at https://my.runware.ai/signup):"
-    );
-    if (key?.trim()) {
-      localStorage.setItem("runware_api_key", key.trim());
-      toast.success("API key updated successfully!");
-      onApiKeyUpdate();
+      if (error) throw error;
+
+      if (RUNWARE_API_KEY) {
+        localStorage.setItem("runware_api_key", RUNWARE_API_KEY);
+        toast.success("API key loaded successfully!");
+        onApiKeyUpdate();
+      } else {
+        toast.error("No API key found. Please add it in the project settings.");
+      }
+    } catch (error) {
+      console.error('Error fetching API key:', error);
+      toast.error("Failed to load API key. Please try again.");
     }
   };
 

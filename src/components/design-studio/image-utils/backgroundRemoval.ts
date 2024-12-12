@@ -1,5 +1,8 @@
-import { pipeline } from '@huggingface/transformers';
-import { resizeImageIfNeeded } from './imageHelpers';
+import { pipeline, env } from '@huggingface/transformers';
+
+// Configure transformers.js to always download models
+env.allowLocalModels = false;
+env.useBrowserCache = false;
 
 const MAX_IMAGE_DIMENSION = 1024;
 
@@ -7,7 +10,7 @@ export const removeImageBackground = async (imageElement: HTMLImageElement): Pro
   console.log('Starting background removal process...');
   
   try {
-    // Initialize segmentation model
+    // Initialize segmentation model without specifying device
     const segmenter = await pipeline(
       'image-segmentation',
       'Xenova/segformer-b0-finetuned-ade-512-512'
@@ -20,9 +23,24 @@ export const removeImageBackground = async (imageElement: HTMLImageElement): Pro
     
     if (!ctx) throw new Error('Could not get canvas context');
     
-    // Resize and draw image
-    resizeImageIfNeeded(canvas, ctx, imageElement, MAX_IMAGE_DIMENSION);
-    console.log(`Image prepared. Dimensions: ${canvas.width}x${canvas.height}`);
+    // Set canvas dimensions
+    let width = imageElement.naturalWidth;
+    let height = imageElement.naturalHeight;
+
+    if (width > MAX_IMAGE_DIMENSION || height > MAX_IMAGE_DIMENSION) {
+      if (width > height) {
+        height = Math.round((height * MAX_IMAGE_DIMENSION) / width);
+        width = MAX_IMAGE_DIMENSION;
+      } else {
+        width = Math.round((width * MAX_IMAGE_DIMENSION) / height);
+        height = MAX_IMAGE_DIMENSION;
+      }
+    }
+
+    canvas.width = width;
+    canvas.height = height;
+    ctx.drawImage(imageElement, 0, 0, width, height);
+    console.log(`Image prepared. Dimensions: ${width}x${height}`);
     
     // Convert to data URL for processing
     const imageData = canvas.toDataURL('image/jpeg', 0.8);
@@ -37,8 +55,8 @@ export const removeImageBackground = async (imageElement: HTMLImageElement): Pro
     
     // Create output canvas
     const outputCanvas = document.createElement('canvas');
-    outputCanvas.width = canvas.width;
-    outputCanvas.height = canvas.height;
+    outputCanvas.width = width;
+    outputCanvas.height = height;
     const outputCtx = outputCanvas.getContext('2d');
     
     if (!outputCtx) throw new Error('Could not get output canvas context');
@@ -46,8 +64,8 @@ export const removeImageBackground = async (imageElement: HTMLImageElement): Pro
     // Draw original image
     outputCtx.drawImage(canvas, 0, 0);
     
-    // Apply mask
-    const outputImageData = outputCtx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
+    // Get image data
+    const outputImageData = outputCtx.getImageData(0, 0, width, height);
     const data = outputImageData.data;
     
     // Apply inverted mask to alpha channel

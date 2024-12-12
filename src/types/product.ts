@@ -25,9 +25,9 @@ export const products: ProductCategory[] = [
         category: "T-Shirts",
         description: "100% cotton, comfortable fit",
         price: "$24.99",
-        image: "/placeholder.svg",
+        image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
         overlayPosition: {
-          top: "20%",
+          top: "25%",
           left: "25%",
           width: "50%"
         }
@@ -37,11 +37,11 @@ export const products: ProductCategory[] = [
         category: "T-Shirts",
         description: "Soft blend fabric with modern cut",
         price: "$29.99",
-        image: "/placeholder.svg",
+        image: "https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b",
         overlayPosition: {
-          top: "20%",
-          left: "25%",
-          width: "50%"
+          top: "22%",
+          left: "28%",
+          width: "44%"
         }
       },
       {
@@ -49,11 +49,11 @@ export const products: ProductCategory[] = [
         category: "T-Shirts",
         description: "Moisture-wicking fabric for active lifestyle",
         price: "$34.99",
-        image: "/placeholder.svg",
+        image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e",
         overlayPosition: {
           top: "20%",
-          left: "25%",
-          width: "50%"
+          left: "30%",
+          width: "40%"
         }
       }
     ]
@@ -66,11 +66,11 @@ export const products: ProductCategory[] = [
         category: "Hoodies",
         description: "Warm and stylish zip-up hoodie",
         price: "$49.99",
-        image: "/placeholder.svg",
+        image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
         overlayPosition: {
-          top: "20%",
-          left: "25%",
-          width: "50%"
+          top: "30%",
+          left: "35%",
+          width: "30%"
         }
       },
       {
@@ -78,11 +78,11 @@ export const products: ProductCategory[] = [
         category: "Hoodies",
         description: "Classic pullover design with kangaroo pocket",
         price: "$44.99",
-        image: "/placeholder.svg",
+        image: "https://images.unsplash.com/photo-1434494878577-86c23bcb06b9",
         overlayPosition: {
-          top: "20%",
-          left: "25%",
-          width: "50%"
+          top: "25%",
+          left: "32%",
+          width: "36%"
         }
       },
       {
@@ -90,11 +90,11 @@ export const products: ProductCategory[] = [
         category: "Hoodies",
         description: "Lightweight technical fleece for everyday comfort",
         price: "$54.99",
-        image: "/placeholder.svg",
+        image: "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952",
         overlayPosition: {
-          top: "20%",
-          left: "25%",
-          width: "50%"
+          top: "28%",
+          left: "30%",
+          width: "40%"
         }
       }
     ]
@@ -107,11 +107,11 @@ export const products: ProductCategory[] = [
         category: "Sweatshirts",
         description: "Traditional crew neck sweatshirt",
         price: "$39.99",
-        image: "/placeholder.svg",
+        image: "https://images.unsplash.com/photo-1483058712412-4245e9b90334",
         overlayPosition: {
-          top: "20%",
-          left: "25%",
-          width: "50%"
+          top: "25%",
+          left: "30%",
+          width: "40%"
         }
       },
       {
@@ -119,11 +119,11 @@ export const products: ProductCategory[] = [
         category: "Sweatshirts",
         description: "Versatile quarter-zip design",
         price: "$45.99",
-        image: "/placeholder.svg",
+        image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
         overlayPosition: {
-          top: "20%",
-          left: "25%",
-          width: "50%"
+          top: "22%",
+          left: "28%",
+          width: "44%"
         }
       }
     ]

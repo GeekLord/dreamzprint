@@ -21,7 +21,7 @@ export const ProductCard = ({ product, selectedDesign, onOrder }: ProductCardPro
         />
         {selectedDesign && (
           <div 
-            className="absolute" 
+            className="absolute mix-blend-multiply"
             style={{
               top: product.overlayPosition.top,
               left: product.overlayPosition.left,

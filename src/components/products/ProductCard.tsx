@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import type { Product } from "@/types/product";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Canvas as FabricCanvas, Image as FabricImage } from "fabric";
+import { toast } from "sonner";
 
 interface ProductCardProps {
   product: Product;
@@ -10,6 +12,63 @@ interface ProductCardProps {
 
 export const ProductCard = ({ product, selectedDesign, onOrder }: ProductCardProps) => {
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0]);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [fabricCanvas, setFabricCanvas] = useState<FabricCanvas | null>(null);
+
+  // Initialize Fabric.js canvas
+  useEffect(() => {
+    if (!canvasRef.current) return;
+
+    const canvas = new FabricCanvas(canvasRef.current, {
+      width: 400,
+      height: 400,
+      backgroundColor: 'transparent',
+    });
+
+    // Load the product image
+    FabricImage.fromURL(product.image, (img) => {
+      img.set({
+        selectable: false,
+        evented: false,
+        width: canvas.width,
+        height: canvas.height,
+      });
+      canvas.add(img);
+      canvas.renderAll();
+    });
+
+    setFabricCanvas(canvas);
+
+    return () => {
+      canvas.dispose();
+    };
+  }, [product.image]);
+
+  // Load and add design image when selected
+  useEffect(() => {
+    if (!fabricCanvas || !selectedDesign) return;
+
+    // Remove any existing design images
+    const existingDesigns = fabricCanvas.getObjects().filter(obj => obj.data?.isDesign);
+    existingDesigns.forEach(obj => fabricCanvas.remove(obj));
+
+    // Add new design image
+    FabricImage.fromURL(selectedDesign, (img) => {
+      const scale = 0.5; // Initial scale
+      img.set({
+        left: fabricCanvas.width * 0.25,
+        top: fabricCanvas.height * 0.25,
+        scaleX: scale,
+        scaleY: scale,
+        data: { isDesign: true },
+      });
+      fabricCanvas.add(img);
+      fabricCanvas.setActiveObject(img);
+      fabricCanvas.renderAll();
+      
+      toast("You can now drag and resize the design!");
+    });
+  }, [selectedDesign, fabricCanvas]);
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 transition-transform hover:scale-105">
@@ -34,28 +93,12 @@ export const ProductCard = ({ product, selectedDesign, onOrder }: ProductCardPro
       )}
       
       <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-100 mb-4">
-        <img 
-          src={product.image} 
-          alt={product.title}
+        <canvas 
+          ref={canvasRef}
           className="w-full h-full object-cover"
         />
-        {selectedDesign && (
-          <div 
-            className="absolute mix-blend-multiply"
-            style={{
-              top: product.overlayPosition.top,
-              left: product.overlayPosition.left,
-              width: product.overlayPosition.width,
-            }}
-          >
-            <img 
-              src={selectedDesign} 
-              alt="Your design"
-              className="w-full h-full object-contain"
-            />
-          </div>
-        )}
       </div>
+
       <Button 
         className="w-full"
         onClick={() => onOrder(product)}

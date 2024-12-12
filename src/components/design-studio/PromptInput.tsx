@@ -34,13 +34,17 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
       
       const { data: { session } } = await supabase.auth.getSession();
       
+      if (!session) {
+        throw new Error("You must be logged in to use this feature");
+      }
+
       const { data, error } = await supabase.functions.invoke('generate-product-prompt', {
         body: {
           description: prompt,
           productType: productType,
         },
         headers: {
-          Authorization: `Bearer ${session?.access_token}`
+          Authorization: `Bearer ${session.access_token}`
         }
       });
 
@@ -58,7 +62,11 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
       toast.success("Generated product-optimized prompt!");
     } catch (error) {
       console.error("Error generating prompt:", error);
-      toast.error("Failed to generate prompt. Please try again.");
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to generate prompt. Please try again."
+      );
     } finally {
       setIsGeneratingPrompt(false);
     }

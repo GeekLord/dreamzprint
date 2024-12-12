@@ -1,6 +1,5 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts"
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.38.4'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -14,31 +13,8 @@ serve(async (req) => {
   }
 
   try {
-    // Verify authentication
-    const authHeader = req.headers.get('Authorization')
-    if (!authHeader) {
-      throw new Error('Missing authorization header')
-    }
-
-    // Create Supabase client
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      {
-        global: {
-          headers: { Authorization: authHeader },
-        },
-      }
-    )
-
-    // Verify the user is authenticated
-    const { data: { user }, error: authError } = await supabaseClient.auth.getUser()
-    if (authError || !user) {
-      throw new Error('Unauthorized')
-    }
-
     const { description, productType } = await req.json()
-    console.log('Processing request for:', { description, productType, userId: user.id })
+    console.log('Processing request for:', { description, productType })
 
     const openAIApiKey = Deno.env.get('OPENAI_API_KEY')
     if (!openAIApiKey) {
@@ -52,7 +28,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'gpt-4-turbo-preview',
         messages: [
           {
             role: 'system',
@@ -90,7 +66,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ error: error.message }),
       { 
-        status: error.message === 'Unauthorized' ? 401 : 500,
+        status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
     )

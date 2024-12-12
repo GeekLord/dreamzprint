@@ -5,7 +5,7 @@ import { hoodieProducts } from './products/hoodies';
 import { sweatshirtProducts } from './products/sweatshirts';
 import { phoneCaseProducts } from './products/phoneCases';
 import { wallArtProducts } from './products/wallArt';
-import { photoBookProducts } from './products/photoBooks';
+import { photoPrintProducts } from './products/photoPrints';
 import { canvasPrintProducts } from './products/canvasPrints';
 import { toteBagProducts } from './products/toteBags';
 
@@ -37,8 +37,8 @@ export const products: ProductCategory[] = [
     items: wallArtProducts
   },
   {
-    category: "Photo Books",
-    items: photoBookProducts
+    category: "Photo Print",
+    items: photoPrintProducts
   },
   {
     category: "Canvas Prints",

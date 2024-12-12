@@ -32,7 +32,7 @@ export const tshirtProducts: Product[] = [
     category: "T-Shirts",
     description: "Moisture-wicking fabric for active lifestyle",
     price: "$34.99",
-    image: "https://images.unsplash.com/photo-1562157873-818bc0726f68?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/c5678c08-dbf5-4839-9ef5-e93b7419d162.png",
     colors: ["#0EA5E9", "#8B5CF6", "#F97316", "#403E43", "#FFFFFF"],
     overlayPosition: {
       top: "20%",

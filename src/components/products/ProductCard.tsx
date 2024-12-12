@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import type { Product } from "@/types/product";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Canvas as FabricCanvas, Image as FabricImage } from "fabric";
 
 interface ProductCardProps {
   product: Product;
@@ -10,6 +11,66 @@ interface ProductCardProps {
 
 export const ProductCard = ({ product, selectedDesign, onOrder }: ProductCardProps) => {
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0]);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [canvas, setCanvas] = useState<FabricCanvas | null>(null);
+
+  useEffect(() => {
+    if (!canvasRef.current) return;
+
+    const fabricCanvas = new FabricCanvas(canvasRef.current, {
+      width: 400,
+      height: 400,
+      backgroundColor: '#ffffff',
+    });
+
+    setCanvas(fabricCanvas);
+
+    // Load the product image
+    FabricImage.fromURL(product.image, (img) => {
+      img.scaleToWidth(fabricCanvas.width!);
+      img.selectable = false; // Make product image non-interactive
+      fabricCanvas.add(img);
+      fabricCanvas.centerObject(img);
+      fabricCanvas.renderAll();
+    }, { crossOrigin: 'anonymous' });
+
+    return () => {
+      fabricCanvas.dispose();
+    };
+  }, [product.image]);
+
+  // Handle design image updates
+  useEffect(() => {
+    if (!canvas || !selectedDesign) return;
+
+    // Remove any existing design images
+    const existingDesigns = canvas.getObjects().filter(obj => obj.data?.type === 'design');
+    existingDesigns.forEach(obj => canvas.remove(obj));
+
+    // Add new design image
+    FabricImage.fromURL(selectedDesign, (img) => {
+      img.scaleToWidth(canvas.width! * 0.3); // Scale design to 30% of canvas width
+      img.set({
+        left: canvas.width! * 0.35,
+        top: canvas.height! * 0.35,
+        data: { type: 'design' },
+      });
+      
+      // Make design interactive
+      img.selectable = true;
+      img.setControlsVisibility({
+        mt: true, // middle top
+        mb: true, // middle bottom
+        ml: true, // middle left
+        mr: true, // middle right
+        mtr: true, // rotate
+      });
+
+      canvas.add(img);
+      canvas.setActiveObject(img);
+      canvas.renderAll();
+    }, { crossOrigin: 'anonymous' });
+  }, [selectedDesign, canvas]);
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 transition-transform hover:scale-105">
@@ -34,28 +95,12 @@ export const ProductCard = ({ product, selectedDesign, onOrder }: ProductCardPro
       )}
       
       <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-100 mb-4">
-        <img 
-          src={product.image} 
-          alt={product.title}
-          className="w-full h-full object-cover"
+        <canvas 
+          ref={canvasRef}
+          className="w-full h-full object-contain"
         />
-        {selectedDesign && (
-          <div 
-            className="absolute mix-blend-multiply"
-            style={{
-              top: product.overlayPosition.top,
-              left: product.overlayPosition.left,
-              width: product.overlayPosition.width,
-            }}
-          >
-            <img 
-              src={selectedDesign} 
-              alt="Your design"
-              className="w-full h-full object-contain"
-            />
-          </div>
-        )}
       </div>
+      
       <Button 
         className="w-full"
         onClick={() => onOrder(product)}

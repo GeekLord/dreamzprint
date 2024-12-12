@@ -14,58 +14,75 @@ serve(async (req) => {
 
   try {
     const { description, productType } = await req.json()
-    console.log('Processing request for:', { description, productType })
+    console.log('Processing request:', { description, productType })
 
     const geminiApiKey = Deno.env.get('GEMINI_API_KEY')
     if (!geminiApiKey) {
-      throw new Error('Gemini API key not configured')
+      console.error('GEMINI_API_KEY not found in environment variables')
+      throw new Error('API key configuration missing')
     }
 
-    console.log('Calling Gemini API...')
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${geminiApiKey}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{
-            text: `You are an expert at creating prompts for AI image generation that work well for printing on products like ${productType}s. 
-            Create a detailed prompt for an AI image generator to create a design for a ${productType}. The design should be based on this description: "${description}"
-            
-            Make sure the prompt:
-            - Is detailed and specific
-            - Works well for ${productType}s
-            - Includes style guidance for clean, printable results
-            - Maintains appropriate contrast and readability
-            - Considers the product's printing limitations
-            
-            Return only the improved prompt text, nothing else.`
-          }]
-        }]
-      })
-    })
+    const prompt = `Create a detailed, product-optimized design prompt for a ${productType} based on this description: "${description}". 
+    Focus on making the design visually appealing and suitable for printing on ${productType}s.
+    Consider contrast, readability, and printing limitations.`
 
-    const data = await response.json()
-    console.log('Gemini response:', data)
+    console.log('Sending request to Gemini API')
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${geminiApiKey}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: prompt
+            }]
+          }]
+        })
+      }
+    )
 
     if (!response.ok) {
-      throw new Error(data.error?.message || 'Failed to generate prompt')
+      const errorData = await response.text()
+      console.error('Gemini API error:', errorData)
+      throw new Error(`Gemini API error: ${response.status}`)
+    }
+
+    const data = await response.json()
+    console.log('Received response from Gemini')
+
+    if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
+      console.error('Invalid response format from Gemini:', data)
+      throw new Error('Invalid response format from Gemini API')
     }
 
     const improvedPrompt = data.candidates[0].content.parts[0].text.trim()
+    console.log('Generated prompt:', improvedPrompt)
 
     return new Response(
       JSON.stringify({ improvedPrompt }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { 
+        headers: { 
+          ...corsHeaders,
+          'Content-Type': 'application/json'
+        }
+      }
     )
   } catch (error) {
     console.error('Error in generate-product-prompt function:', error)
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error.message,
+        details: 'Failed to generate prompt. Please try again.'
+      }),
       { 
         status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        headers: { 
+          ...corsHeaders,
+          'Content-Type': 'application/json'
+        }
       }
     )
   }

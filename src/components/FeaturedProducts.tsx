@@ -18,7 +18,7 @@ const products = [
   {
     id: 3,
     name: "Photo Print",
-    image: "https://images.unsplash.com/photo-1473091534298-04dcbce3278c?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/665af363-6ed2-47d8-9e19-1485a5605af7.png",
     price: "From $39.99",
     description: "High-quality photo prints for your memories"
   },

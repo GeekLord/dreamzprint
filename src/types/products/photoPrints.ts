@@ -2,11 +2,11 @@ import type { Product } from '../productTypes';
 
 export const photoBookProducts: Product[] = [
   {
-    title: "Hardcover Photo Book",
-    category: "Photo Books",
-    description: "Premium quality photo album",
+    title: "Premium Photo Print",
+    category: "Photo Print",
+    description: "High-quality photo prints on premium paper",
     price: "$39.99",
-    image: "https://images.unsplash.com/photo-1589998059171-988d887df646?auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1473091534298-04dcbce3278c?auto=format&fit=crop&q=80",
     overlayPosition: {
       top: "5%",
       left: "5%",
@@ -14,11 +14,11 @@ export const photoBookProducts: Product[] = [
     }
   },
   {
-    title: "Softcover Photo Book",
-    category: "Photo Books",
-    description: "Flexible and lightweight photo book",
+    title: "Standard Photo Print",
+    category: "Photo Print",
+    description: "Beautiful photo prints on standard paper",
     price: "$29.99",
-    image: "https://images.unsplash.com/photo-1589998059171-988d887df646?auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1473091534298-04dcbce3278c?auto=format&fit=crop&q=80",
     overlayPosition: {
       top: "5%",
       left: "5%",
@@ -26,3 +26,5 @@ export const photoBookProducts: Product[] = [
     }
   }
 ];
+
+export { photoBookProducts as photoPrintProducts };

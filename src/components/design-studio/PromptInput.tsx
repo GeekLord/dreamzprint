@@ -4,7 +4,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Sparkles } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
 
 interface PromptInputProps {
   prompt: string;
@@ -17,6 +16,17 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
   const [productType, setProductType] = useState("t-shirt");
   const [isGeneratingPrompt, setIsGeneratingPrompt] = useState(false);
 
+  const requestApiKey = () => {
+    const key = window.prompt(
+      "Please enter your Gemini API key (get one at https://makersuite.google.com/app/apikey):"
+    );
+    if (key?.trim()) {
+      localStorage.setItem("gemini_api_key", key.trim());
+      return key.trim();
+    }
+    return null;
+  };
+
   const generateProductPrompt = async () => {
     if (!prompt.trim()) {
       toast.error("Please enter a design description first");
@@ -27,13 +37,14 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
     try {
       console.log("Generating product-optimized prompt for:", { description: prompt, productType });
 
-      const { data, error: secretError } = await supabase.functions.invoke('get-secret', {
-        body: { key: 'GEMINI_API_KEY' }
-      });
+      let apiKey = localStorage.getItem("gemini_api_key");
 
-      if (secretError || !data?.GEMINI_API_KEY) {
-        console.error('Secret error:', secretError);
-        throw new Error('Failed to retrieve API key');
+      if (!apiKey?.trim()) {
+        apiKey = requestApiKey();
+        if (!apiKey) {
+          toast.error("API key is required to generate prompts");
+          return;
+        }
       }
 
       const promptText = `Create a detailed, product-optimized design prompt for a ${productType} based on this description: "${prompt}". 
@@ -41,7 +52,7 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
       Consider contrast, readability, and printing limitations.`;
 
       const response = await fetch(
-        'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=' + data.GEMINI_API_KEY,
+        'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=' + apiKey,
         {
           method: 'POST',
           headers: {
@@ -60,6 +71,11 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
       if (!response.ok) {
         const errorData = await response.text();
         console.error('Gemini API error:', errorData);
+        if (response.status === 403) {
+          localStorage.removeItem("gemini_api_key");
+          toast.error("Invalid API key. Please try again with a valid key.");
+          return;
+        }
         throw new Error(`Failed to generate prompt: ${response.statusText}`);
       }
 

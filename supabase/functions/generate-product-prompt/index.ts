@@ -1,6 +1,5 @@
-import "https://deno.land/x/xhr@0.1.0/mod.ts"
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { GoogleGenerativeAI } from "@google/generative-ai"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -8,101 +7,53 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders })
+    return new Response('ok', { headers: corsHeaders })
   }
 
   try {
-    // Create a Supabase client with the Auth context of the function
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      { global: { headers: { Authorization: req.headers.get('Authorization')! } } }
-    )
-
-    // Now we can get the session or user object
-    const {
-      data: { user },
-    } = await supabaseClient.auth.getUser()
-
-    console.log("User context:", user?.id || "No user found")
+    const GEMINI_API_KEY = Deno.env.get('GEMINI_API_KEY')
+    if (!GEMINI_API_KEY) {
+      throw new Error('Missing Gemini API key')
+    }
 
     const { description, productType } = await req.json()
-    console.log('Processing request:', { description, productType })
+    
+    // Initialize Gemini
+    const genAI = new GoogleGenerativeAI(GEMINI_API_KEY)
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" })
 
-    const geminiApiKey = Deno.env.get('GEMINI_API_KEY')
-    if (!geminiApiKey) {
-      console.error('GEMINI_API_KEY not found in environment variables')
-      throw new Error('API key configuration missing')
-    }
+    console.log("Generating prompt for:", { description, productType })
 
-    const prompt = `Create a print-ready design description (max 50 words) for this idea: "${description}".
-    Focus on the artwork/graphic only, no product.
-    The design will be printed on a ${productType}, so ensure:
-    - High contrast elements
-    - Clear, readable design
-    - No gradients or tiny details
-    - Clean edges and shapes`
+    const prompt = `Create a design prompt for a ${productType} design based on this description: "${description}".
+    Focus on creating a standalone artistic design suitable for printing, without including the ${productType} itself.
+    Consider these printing requirements:
+    - High contrast and clear edges
+    - Appropriate size and placement for ${productType}
+    - No product mockups, just the design itself
+    - Simple, clean artwork that will print well`
 
-    console.log('Sending request to Gemini API')
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${geminiApiKey}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          contents: [{
-            parts: [{
-              text: prompt
-            }]
-          }]
-        })
-      }
-    )
+    const result = await model.generateContent(prompt)
+    const response = await result.response
+    const improvedPrompt = response.text()
 
-    if (!response.ok) {
-      const errorData = await response.text()
-      console.error('Gemini API error:', errorData)
-      throw new Error(`Gemini API error: ${response.status}`)
-    }
-
-    const data = await response.json()
-    console.log('Received response from Gemini')
-
-    if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
-      console.error('Invalid response format from Gemini:', data)
-      throw new Error('Invalid response format from Gemini API')
-    }
-
-    const improvedPrompt = data.candidates[0].content.parts[0].text.trim()
-    console.log('Generated prompt:', improvedPrompt)
+    console.log("Generated prompt:", improvedPrompt)
 
     return new Response(
       JSON.stringify({ improvedPrompt }),
-      { 
-        headers: { 
-          ...corsHeaders,
-          'Content-Type': 'application/json'
-        }
-      }
+      {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 200,
+      },
     )
   } catch (error) {
-    console.error('Error in generate-product-prompt function:', error)
+    console.error('Error:', error)
     return new Response(
-      JSON.stringify({ 
-        error: error.message,
-        details: 'Failed to generate prompt. Please try again.'
-      }),
-      { 
+      JSON.stringify({ error: error.message }),
+      {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 500,
-        headers: { 
-          ...corsHeaders,
-          'Content-Type': 'application/json'
-        }
-      }
+      },
     )
   }
 })

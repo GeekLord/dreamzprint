@@ -23,11 +23,6 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
       return;
     }
 
-    if (!supabase) {
-      toast.error("Supabase client is not initialized. Please check your environment variables.");
-      return;
-    }
-
     setIsGeneratingPrompt(true);
     try {
       console.log("Calling generate-product-prompt with:", { description: prompt, productType });

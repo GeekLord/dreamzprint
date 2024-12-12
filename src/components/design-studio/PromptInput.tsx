@@ -158,6 +158,12 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
           AI Idea Optimizer
         </Button>
       </div>
+      <Textarea
+        placeholder="Describe your design idea..."
+        value={prompt}
+        onChange={(e) => setPrompt(e.target.value)}
+        className="min-h-[100px]"
+      />
       <div className="space-y-2">
         <label className="block text-sm font-medium">
           Upload Inspiration Image (Optional)

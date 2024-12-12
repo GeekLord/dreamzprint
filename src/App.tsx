@@ -9,6 +9,7 @@ import Products from "./pages/Products";
 import DesignStudio from "./pages/DesignStudio";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Login from "./pages/Login";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +56,7 @@ const App = () => {
             <Route path="/design" element={<DesignStudio />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import { Button } from "../components/ui/button";
@@ -8,12 +9,37 @@ import { toast } from "sonner";
 import { RunwareService, GenerateImageParams } from "../services/runware";
 import PromptInput from "../components/design-studio/PromptInput";
 import DesignPreview from "../components/design-studio/DesignPreview";
+import { supabase } from "@/integrations/supabase/client";
 
 const DesignStudio = () => {
+  const navigate = useNavigate();
   const [prompt, setPrompt] = useState("");
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isImprovingPrompt, setIsImprovingPrompt] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        toast.error("Please log in to use the Design Studio");
+        navigate("/login");
+      }
+    };
+
+    checkAuth();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT' || !session) {
+        navigate("/login");
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [navigate]);
 
   const requestApiKey = () => {
     const key = window.prompt(

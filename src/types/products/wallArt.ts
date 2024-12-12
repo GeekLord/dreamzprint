@@ -6,7 +6,7 @@ export const wallArtProducts: Product[] = [
     category: "Wall Art",
     description: "Gallery-quality canvas prints",
     price: "$49.99",
-    image: "https://images.unsplash.com/photo-1513519245088-0e12902e35a6?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/556d287d-9c39-40b9-93dd-bd74c6af757b.png",
     overlayPosition: {
       top: "10%",
       left: "10%",
@@ -18,7 +18,7 @@ export const wallArtProducts: Product[] = [
     category: "Wall Art",
     description: "Professional framed artwork",
     price: "$39.99",
-    image: "https://images.unsplash.com/photo-1513519245088-0e12902e35a6?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/556d287d-9c39-40b9-93dd-bd74c6af757b.png",
     overlayPosition: {
       top: "10%",
       left: "10%",

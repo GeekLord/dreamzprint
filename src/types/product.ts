@@ -22,6 +22,7 @@ export const products: ProductCategory[] = [
     items: [
       {
         title: "Classic Cotton T-Shirt",
+        category: "T-Shirts",
         description: "100% cotton, comfortable fit",
         price: "$24.99",
         image: "/placeholder.svg",
@@ -30,9 +31,24 @@ export const products: ProductCategory[] = [
           left: "25%",
           width: "50%"
         }
-      },
-      // ... Add more t-shirt products here
+      }
     ]
   },
-  // ... Add more categories here
+  {
+    category: "Hoodies",
+    items: [
+      {
+        title: "Premium Zip Hoodie",
+        category: "Hoodies",
+        description: "Warm and stylish zip-up hoodie",
+        price: "$49.99",
+        image: "/placeholder.svg",
+        overlayPosition: {
+          top: "20%",
+          left: "25%",
+          width: "50%"
+        }
+      }
+    ]
+  }
 ];

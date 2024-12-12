@@ -36,13 +36,19 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
         body: JSON.stringify({
           contents: [{
             parts: [{
-              text: `Create a design prompt for a ${productType} design based on this description: "${prompt}".
-              Focus on creating a standalone artistic design suitable for printing, without including the ${productType} itself.
-              Consider these printing requirements:
-              - High contrast and clear edges
-              - Appropriate size and placement for ${productType}
-              - No product mockups, just the design itself
-              - Simple, clean artwork that will print well`
+              text: `Create a concise, specific design prompt for a ${productType} design based on this description: "${prompt}".
+              Follow these rules strictly:
+              1. Focus only on the artistic design elements, not the ${productType} itself
+              2. Keep the prompt under 100 words
+              3. Emphasize these key aspects:
+                - High contrast and clear edges for good printing
+                - Simple, clean artwork without complex gradients
+                - Bold, distinctive visual elements
+                - Appropriate scale for ${productType} printing
+              4. Remove any references to the product itself
+              5. Format as a single, clear description without bullet points
+              6. Avoid phrases like "design of" or "featuring" - be direct
+              7. Focus on the visual elements only, no marketing or conceptual language`
             }]
           }]
         })
@@ -55,7 +61,13 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
       const data = await response.json();
       const improvedPrompt = data.candidates[0].content.parts[0].text;
 
-      setPrompt(improvedPrompt);
+      // Clean up the response by removing any line breaks and extra spaces
+      const cleanedPrompt = improvedPrompt
+        .replace(/\n/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+      setPrompt(cleanedPrompt);
       toast.success("Generated product-optimized prompt!");
     } catch (error) {
       console.error("Error generating prompt:", error);

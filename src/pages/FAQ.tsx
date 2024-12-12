@@ -7,8 +7,24 @@ import Footer from "@/components/Footer";
 const FAQ = () => {
   const faqs = [
     {
-      question: "How do I create a custom design?",
-      answer: "You can use our Design Studio to create custom designs. Simply click on the 'Design Studio' link in the navigation menu and follow the intuitive interface to create your unique design using AI-powered tools."
+      question: "How does the Design Studio work?",
+      answer: `Our Design Studio uses advanced AI technology to create custom designs. Here's how it works:
+
+1. Description: Start by describing your design idea in detail.
+2. Product Optimization: Click "Optimize for Product" to refine your prompt for the specific product type you've chosen.
+3. Inspiration Images: Optionally upload an image (JPEG, PNG, or WEBP, max 5MB) to inspire the AI. The system will use it as a reference for style and composition.
+4. Generation: Click "Generate Design" to create your custom artwork.
+
+The AI considers factors like contrast, printability, and product-specific requirements to ensure high-quality results.`
+    },
+    {
+      question: "How do I get the best results from the Design Studio?",
+      answer: `To get optimal results:
+- Be specific in your design descriptions
+- Use the "Optimize for Product" feature to tailor your prompt
+- Upload inspiration images to guide the AI's style and composition
+- Experiment with different descriptions and inspiration images
+- Consider the product type when describing your design`
     },
     {
       question: "What products can I customize?",
@@ -44,21 +60,34 @@ const FAQ = () => {
           </CardContent>
         </Card>
 
-        {/* Help Section */}
+        {/* Design Studio Guide Section */}
         <Card>
           <CardHeader className="flex flex-row items-center gap-2">
             <HelpCircle className="h-6 w-6 text-primary" />
-            <CardTitle>Need Help?</CardTitle>
+            <CardTitle>Design Studio Guide</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-muted-foreground mb-4">
-              If you can't find the answer you're looking for, our support team is here to help:
-            </p>
-            <ul className="list-disc list-inside space-y-2 text-muted-foreground">
-              <li>Email us at support@dreamzprint.com</li>
-              <li>Visit our Contact page for more ways to reach us</li>
-              <li>Check our detailed guides in the Design Studio</li>
-            </ul>
+            <div className="space-y-4">
+              <p className="text-muted-foreground">
+                Our Design Studio combines AI technology with your creativity to generate unique designs. Here's a detailed guide on how to use it:
+              </p>
+              <div className="space-y-2">
+                <h3 className="font-semibold">1. Design Description</h3>
+                <p className="text-muted-foreground">Start by describing your design idea in detail. The more specific you are, the better the results.</p>
+                
+                <h3 className="font-semibold">2. Product Selection</h3>
+                <p className="text-muted-foreground">Choose the product type you want to create a design for. This helps optimize the design for specific printing requirements.</p>
+                
+                <h3 className="font-semibold">3. Prompt Optimization</h3>
+                <p className="text-muted-foreground">Use the "Optimize for Product" feature to refine your description. This ensures the design works well for your chosen product.</p>
+                
+                <h3 className="font-semibold">4. Inspiration Images</h3>
+                <p className="text-muted-foreground">Optionally upload an inspiration image to guide the AI. This helps achieve specific styles or compositions you're looking for.</p>
+                
+                <h3 className="font-semibold">5. Design Generation</h3>
+                <p className="text-muted-foreground">Click "Generate Design" to create your custom artwork. The AI considers factors like contrast, printability, and product requirements.</p>
+              </div>
+            </div>
           </CardContent>
         </Card>
 

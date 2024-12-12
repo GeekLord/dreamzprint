@@ -122,8 +122,12 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
     <div className="space-y-4">
       <div className="bg-muted/50 rounded-lg p-4 mb-4 text-sm">
         <p className="text-muted-foreground">
-          💡 <span className="font-medium">Pro tip:</span> For better results, first describe your design idea, then click "Optimize for Product" to enhance your prompt. This will help generate designs that work perfectly for your chosen product type.
+          💡 <span className="font-medium">Pro tips:</span>
         </p>
+        <ul className="list-disc list-inside mt-2 space-y-1">
+          <li>For better results, first describe your design idea, then click "Optimize for Product" to enhance your prompt.</li>
+          <li>Upload an inspiration image to guide the AI in creating designs that match your vision. The AI will use it as a reference for style, colors, and composition.</li>
+        </ul>
       </div>
       <label className="block text-sm font-medium mb-2">
         Design Description

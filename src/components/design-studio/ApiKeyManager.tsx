@@ -12,14 +12,19 @@ interface ApiKeyManagerProps {
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables. Please check your .env file.');
-}
+let supabase: ReturnType<typeof createClient> | null = null;
 
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+if (supabaseUrl && supabaseAnonKey) {
+  supabase = createClient(supabaseUrl, supabaseAnonKey);
+}
 
 const ApiKeyManager = ({ onApiKeyUpdate, disabled }: ApiKeyManagerProps) => {
   const handleResetApiKey = async () => {
+    if (!supabase) {
+      toast.error("Supabase configuration is missing. Please check your environment variables.");
+      return;
+    }
+
     try {
       const { data: { RUNWARE_API_KEY }, error } = await supabase.functions.invoke('get-secret', {
         body: { key: 'RUNWARE_API_KEY' }

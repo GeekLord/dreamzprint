@@ -83,6 +83,11 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
 
   return (
     <div className="space-y-4">
+      <div className="bg-muted/50 rounded-lg p-4 mb-4 text-sm">
+        <p className="text-muted-foreground">
+          💡 <span className="font-medium">Pro tip:</span> For better results, first describe your design idea, then click "Optimize for Product" to enhance your prompt. This will help generate designs that work perfectly for your chosen product type.
+        </p>
+      </div>
       <label className="block text-sm font-medium mb-2">
         Design Description
       </label>

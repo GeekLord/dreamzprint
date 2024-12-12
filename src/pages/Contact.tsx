@@ -32,7 +32,7 @@ const Contact = () => {
     {
       icon: Phone,
       title: "Phone",
-      content: "+1 (555) 123-4567",
+      content: "+1 (662) 786-0001",
       description: "Mon-Fri from 8am to 5pm",
     },
     {

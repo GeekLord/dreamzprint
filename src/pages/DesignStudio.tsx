@@ -5,7 +5,7 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { Card } from "../components/ui/card";
-import { Loader2, Key } from "lucide-react";
+import { Loader2, Key, Wand2 } from "lucide-react";
 import { toast } from "sonner";
 import { RunwareService, GenerateImageParams } from "../services/runware";
 
@@ -13,6 +13,7 @@ const DesignStudio = () => {
   const [prompt, setPrompt] = useState("");
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isImprovingPrompt, setIsImprovingPrompt] = useState(false);
 
   const requestApiKey = () => {
     const key = window.prompt("Please enter your Runware API key (get one at https://my.runware.ai/signup):");
@@ -21,6 +22,37 @@ const DesignStudio = () => {
       return key.trim();
     }
     return null;
+  };
+
+  const improvePrompt = async () => {
+    if (!prompt.trim()) {
+      toast.error("Please enter a design description first");
+      return;
+    }
+
+    setIsImprovingPrompt(true);
+    try {
+      const improvedPrompt = await fetch("https://api.runware.ai/v1/improve-prompt", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("runware_api_key")}`,
+        },
+        body: JSON.stringify({ prompt }),
+      }).then(res => res.json());
+
+      if (improvedPrompt.error) {
+        throw new Error(improvedPrompt.error);
+      }
+
+      setPrompt(improvedPrompt.improvedPrompt);
+      toast.success("Prompt improved successfully!");
+    } catch (error) {
+      console.error("Error improving prompt:", error);
+      toast.error("Failed to improve prompt. Please try again.");
+    } finally {
+      setIsImprovingPrompt(false);
+    }
   };
 
   const handleGenerate = async () => {
@@ -33,7 +65,6 @@ const DesignStudio = () => {
     try {
       let apiKey = localStorage.getItem("runware_api_key");
       
-      // If no API key exists or it's invalid, request it
       if (!apiKey?.trim()) {
         apiKey = requestApiKey();
         if (!apiKey) {
@@ -57,7 +88,6 @@ const DesignStudio = () => {
       toast.success("Design generated successfully!");
     } catch (error) {
       console.error("Error generating image:", error);
-      // If we get an API key error, clear the stored key and ask for a new one
       if (error.toString().includes("Missing API Key")) {
         localStorage.removeItem("runware_api_key");
         toast.error("Invalid API key. Please try again with a valid key.");
@@ -90,12 +120,24 @@ const DesignStudio = () => {
                 <label className="block text-sm font-medium mb-2">
                   Design Description
                 </label>
-                <Textarea
-                  placeholder="Describe your design idea..."
-                  value={prompt}
-                  onChange={(e) => setPrompt(e.target.value)}
-                  className="min-h-[100px]"
-                />
+                <div className="relative">
+                  <Textarea
+                    placeholder="Describe your design idea..."
+                    value={prompt}
+                    onChange={(e) => setPrompt(e.target.value)}
+                    className="min-h-[100px] pr-10"
+                  />
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="absolute right-2 top-2"
+                    onClick={improvePrompt}
+                    disabled={isImprovingPrompt || !prompt.trim()}
+                    title="Improve prompt with AI"
+                  >
+                    <Wand2 className={`h-4 w-4 ${isImprovingPrompt ? 'animate-pulse' : ''}`} />
+                  </Button>
+                </div>
               </div>
               <div className="flex gap-2">
                 <Button

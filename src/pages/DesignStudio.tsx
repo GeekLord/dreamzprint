@@ -5,7 +5,7 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { Card } from "../components/ui/card";
-import { Loader2 } from "lucide-react";
+import { Loader2, Key } from "lucide-react";
 import { toast } from "sonner";
 import { RunwareService, GenerateImageParams } from "../services/runware";
 
@@ -13,6 +13,15 @@ const DesignStudio = () => {
   const [prompt, setPrompt] = useState("");
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+
+  const requestApiKey = () => {
+    const key = window.prompt("Please enter your Runware API key (get one at https://my.runware.ai/signup):");
+    if (key?.trim()) {
+      localStorage.setItem("runware_api_key", key.trim());
+      return key.trim();
+    }
+    return null;
+  };
 
   const handleGenerate = async () => {
     if (!prompt.trim()) {
@@ -22,19 +31,18 @@ const DesignStudio = () => {
 
     setIsGenerating(true);
     try {
-      // For now, we'll use a temporary input for the API key
-      const apiKey = localStorage.getItem("runware_api_key");
-      if (!apiKey) {
-        const key = window.prompt("Please enter your Runware API key:");
-        if (key) {
-          localStorage.setItem("runware_api_key", key);
-        } else {
-          toast.error("API key is required");
+      let apiKey = localStorage.getItem("runware_api_key");
+      
+      // If no API key exists or it's invalid, request it
+      if (!apiKey?.trim()) {
+        apiKey = requestApiKey();
+        if (!apiKey) {
+          toast.error("API key is required to generate images");
           return;
         }
       }
 
-      const runwareService = new RunwareService(apiKey || "");
+      const runwareService = new RunwareService(apiKey);
       const params: GenerateImageParams = {
         positivePrompt: prompt,
         model: "runware:100@1",
@@ -49,9 +57,23 @@ const DesignStudio = () => {
       toast.success("Design generated successfully!");
     } catch (error) {
       console.error("Error generating image:", error);
-      toast.error("Failed to generate design. Please try again.");
+      // If we get an API key error, clear the stored key and ask for a new one
+      if (error.toString().includes("Missing API Key")) {
+        localStorage.removeItem("runware_api_key");
+        toast.error("Invalid API key. Please try again with a valid key.");
+      } else {
+        toast.error("Failed to generate design. Please try again.");
+      }
     } finally {
       setIsGenerating(false);
+    }
+  };
+
+  const handleResetApiKey = () => {
+    localStorage.removeItem("runware_api_key");
+    const newKey = requestApiKey();
+    if (newKey) {
+      toast.success("API key updated successfully!");
     }
   };
 
@@ -75,20 +97,30 @@ const DesignStudio = () => {
                   className="min-h-[100px]"
                 />
               </div>
-              <Button
-                onClick={handleGenerate}
-                disabled={isGenerating}
-                className="w-full"
-              >
-                {isGenerating ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Generating...
-                  </>
-                ) : (
-                  "Generate Design"
-                )}
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  onClick={handleGenerate}
+                  disabled={isGenerating}
+                  className="flex-1"
+                >
+                  {isGenerating ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Generating...
+                    </>
+                  ) : (
+                    "Generate Design"
+                  )}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={handleResetApiKey}
+                  disabled={isGenerating}
+                  title="Update API Key"
+                >
+                  <Key className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
           </Card>
 

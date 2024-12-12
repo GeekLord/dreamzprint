@@ -10,6 +10,9 @@ import DesignStudio from "./pages/DesignStudio";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
+import ReturnsPolicy from "./pages/ReturnsPolicy";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +60,9 @@ const App = () => {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsOfService />} />
+            <Route path="/returns" element={<ReturnsPolicy />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>

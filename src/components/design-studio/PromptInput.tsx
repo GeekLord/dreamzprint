@@ -36,6 +36,9 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
         body: {
           description: prompt,
           productType: productType,
+        },
+        headers: {
+          apikey: supabase.supabaseKey
         }
       });
 

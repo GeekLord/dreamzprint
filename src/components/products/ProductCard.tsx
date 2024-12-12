@@ -25,20 +25,16 @@ export const ProductCard = ({ product, selectedDesign, onOrder }: ProductCardPro
       backgroundColor: 'transparent',
     });
 
-    // Load the product image with proper error handling
-    new Image().src = product.image;
-    FabricImage.fromURL(product.image, {
-      crossOrigin: 'anonymous',
-      callback: (img) => {
-        img.scaleToWidth(canvas.width!);
-        img.scaleToHeight(canvas.height!);
-        img.set({
-          selectable: false,
-          evented: false,
-        });
-        canvas.add(img);
-        canvas.renderAll();
-      }
+    // Load the product image
+    FabricImage.fromURL(product.image, (img) => {
+      img.scaleToWidth(canvas.width!);
+      img.scaleToHeight(canvas.height!);
+      img.set({
+        selectable: false,
+        evented: false,
+      });
+      canvas.add(img);
+      canvas.renderAll();
     });
 
     setFabricCanvas(canvas);
@@ -58,25 +54,21 @@ export const ProductCard = ({ product, selectedDesign, onOrder }: ProductCardPro
     });
     existingDesigns.forEach(obj => fabricCanvas.remove(obj));
 
-    // Add new design image with proper error handling
-    new Image().src = selectedDesign;
-    FabricImage.fromURL(selectedDesign, {
-      crossOrigin: 'anonymous',
-      callback: (img) => {
-        const scale = 0.5;
-        img.set({
-          left: fabricCanvas.width! * 0.25,
-          top: fabricCanvas.height! * 0.25,
-          scaleX: scale,
-          scaleY: scale,
-          customType: 'design',
-        });
-        fabricCanvas.add(img);
-        fabricCanvas.setActiveObject(img);
-        fabricCanvas.renderAll();
-        
-        toast("You can now drag and resize the design!");
-      }
+    // Add new design image
+    FabricImage.fromURL(selectedDesign, (img) => {
+      const scale = 0.5;
+      img.set({
+        left: fabricCanvas.width! * 0.25,
+        top: fabricCanvas.height! * 0.25,
+        scaleX: scale,
+        scaleY: scale,
+        customType: 'design',
+      });
+      fabricCanvas.add(img);
+      fabricCanvas.setActiveObject(img);
+      fabricCanvas.renderAll();
+      
+      toast("You can now drag and resize the design!");
     });
   }, [selectedDesign, fabricCanvas]);
 

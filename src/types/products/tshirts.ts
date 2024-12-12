@@ -6,7 +6,7 @@ export const tshirtProducts: Product[] = [
     category: "T-Shirts",
     description: "100% cotton, comfortable fit",
     price: "$24.99",
-    image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/556d287d-9c39-40b9-93dd-bd74c6af757b.png",
     colors: ["#FFFFFF", "#000000", "#8E9196", "#D6BCFA", "#FDE1D3"],
     overlayPosition: {
       top: "25%",

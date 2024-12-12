@@ -4,111 +4,141 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { X } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { supabase } from "@/integrations/supabase/client";
 
-const products = [
-  {
-    category: "Apparel",
-    items: [
-      { 
-        title: "Custom T-Shirts", 
-        description: "Create your own unique t-shirt designs", 
-        price: "From $24.99",
-        image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&q=80",
-        overlayPosition: { top: "25%", left: "25%", width: "50%" }
-      },
-      { 
-        title: "Hoodies", 
-        description: "Comfortable and stylish custom hoodies", 
-        price: "From $39.99",
-        image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80",
-        overlayPosition: { top: "25%", left: "25%", width: "50%" }
-      },
-      { 
-        title: "Tank Tops", 
-        description: "Perfect for summer and workouts", 
-        price: "From $19.99",
-        image: "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?auto=format&fit=crop&q=80",
-        overlayPosition: { top: "25%", left: "25%", width: "50%" }
-      },
-      { 
-        title: "Long Sleeve Shirts", 
-        description: "Year-round comfort with your designs", 
-        price: "From $29.99",
-        image: "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&q=80",
-        overlayPosition: { top: "25%", left: "25%", width: "50%" }
-      }
-    ]
-  },
-  {
-    category: "Home Decor",
-    items: [
-      { 
-        title: "Wall Art", 
-        description: "Transform your space with custom prints", 
-        price: "From $29.99",
-        image: "https://images.unsplash.com/photo-1513519245088-0e12902e35a6?auto=format&fit=crop&q=80",
-        overlayPosition: { top: "10%", left: "10%", width: "80%" }
-      },
-      { 
-        title: "Canvas Prints", 
-        description: "Gallery-quality canvas prints", 
-        price: "From $49.99",
-        image: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&q=80",
-        overlayPosition: { top: "10%", left: "10%", width: "80%" }
-      },
-      { 
-        title: "Throw Pillows", 
-        description: "Add personality to any room", 
-        price: "From $24.99",
-        image: "https://images.unsplash.com/photo-1584100936595-c0654b55a2e6?auto=format&fit=crop&q=80",
-        overlayPosition: { top: "20%", left: "20%", width: "60%" }
-      },
-      { 
-        title: "Photo Blankets", 
-        description: "Cozy custom blankets", 
-        price: "From $59.99",
-        image: "https://images.unsplash.com/photo-1580500325788-5cc2e0f70ecd?auto=format&fit=crop&q=80",
-        overlayPosition: { top: "20%", left: "20%", width: "60%" }
-      }
-    ]
-  },
-  {
-    category: "Accessories",
-    items: [
-      { 
-        title: "Phone Cases", 
-        description: "Protect your device with style", 
-        price: "From $19.99",
-        image: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?auto=format&fit=crop&q=80",
-        overlayPosition: { top: "15%", left: "15%", width: "70%" }
-      },
-      { 
-        title: "Tote Bags", 
-        description: "Eco-friendly custom bags", 
-        price: "From $16.99",
-        image: "https://images.unsplash.com/photo-1597484662317-9bd7bdda2907?auto=format&fit=crop&q=80",
-        overlayPosition: { top: "20%", left: "20%", width: "60%" }
-      },
-      { 
-        title: "Laptop Sleeves", 
-        description: "Stylish protection for your tech", 
-        price: "From $29.99",
-        image: "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&q=80",
-        overlayPosition: { top: "25%", left: "25%", width: "50%" }
-      },
-      { 
-        title: "Mouse Pads", 
-        description: "Custom desk accessories", 
-        price: "From $14.99",
-        image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&q=80",
-        overlayPosition: { top: "10%", left: "10%", width: "80%" }
-      }
-    ]
-  }
-];
+interface OrderDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  product: {
+    title: string;
+    category: string;
+    price: string;
+  };
+  designUrl: string | null;
+}
+
+const OrderDialog = ({ isOpen, onClose, product, designUrl }: OrderDialogProps) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    customerName: '',
+    customerEmail: '',
+    shippingAddress: '',
+    quantity: 1,
+    notes: ''
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!designUrl) {
+      toast.error("Please select a design first");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const price = parseFloat(product.price.replace(/[^0-9.]/g, ''));
+      const { error } = await supabase.from('orders').insert({
+        product_title: product.title,
+        product_category: product.category,
+        design_url: designUrl,
+        quantity: formData.quantity,
+        price: price * formData.quantity,
+        customer_name: formData.customerName,
+        customer_email: formData.customerEmail,
+        shipping_address: formData.shippingAddress,
+        notes: formData.notes
+      });
+
+      if (error) throw error;
+
+      toast.success("Order placed successfully!");
+      onClose();
+    } catch (error) {
+      console.error('Error placing order:', error);
+      toast.error("Failed to place order. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Place Order</DialogTitle>
+          <DialogDescription>
+            Complete your order details for {product.title}
+          </DialogDescription>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="customerName">Name</Label>
+            <Input
+              id="customerName"
+              required
+              value={formData.customerName}
+              onChange={(e) => setFormData(prev => ({ ...prev, customerName: e.target.value }))}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="customerEmail">Email</Label>
+            <Input
+              id="customerEmail"
+              type="email"
+              required
+              value={formData.customerEmail}
+              onChange={(e) => setFormData(prev => ({ ...prev, customerEmail: e.target.value }))}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="shippingAddress">Shipping Address</Label>
+            <Textarea
+              id="shippingAddress"
+              required
+              value={formData.shippingAddress}
+              onChange={(e) => setFormData(prev => ({ ...prev, shippingAddress: e.target.value }))}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="quantity">Quantity</Label>
+            <Input
+              id="quantity"
+              type="number"
+              min="1"
+              required
+              value={formData.quantity}
+              onChange={(e) => setFormData(prev => ({ ...prev, quantity: parseInt(e.target.value) }))}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="notes">Additional Notes</Label>
+            <Textarea
+              id="notes"
+              value={formData.notes}
+              onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
+            />
+          </div>
+          <DialogFooter>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Placing Order..." : "Place Order"}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 const Products = () => {
   const [selectedDesign, setSelectedDesign] = useState<string | null>(null);
+  const [orderDialog, setOrderDialog] = useState<{
+    isOpen: boolean;
+    product: any;
+  } | null>(null);
 
   useEffect(() => {
     const design = localStorage.getItem('selectedDesign');
@@ -122,6 +152,14 @@ const Products = () => {
     localStorage.removeItem('selectedDesign');
     setSelectedDesign(null);
     toast.success("Design cleared successfully");
+  };
+
+  const handleOrder = (product: any) => {
+    if (!selectedDesign) {
+      toast.error("Please create a design first");
+      return;
+    }
+    setOrderDialog({ isOpen: true, product });
   };
 
   return (
@@ -177,7 +215,10 @@ const Products = () => {
                         </div>
                       )}
                     </div>
-                    <Button className="w-full">
+                    <Button 
+                      className="w-full"
+                      onClick={() => handleOrder({ ...product, category: category.category })}
+                    >
                       {selectedDesign ? 'Order with Custom Design' : 'Create Your Design'}
                     </Button>
                   </div>
@@ -187,6 +228,14 @@ const Products = () => {
           ))}
         </div>
       </main>
+      {orderDialog && (
+        <OrderDialog
+          isOpen={orderDialog.isOpen}
+          onClose={() => setOrderDialog(null)}
+          product={orderDialog.product}
+          designUrl={selectedDesign}
+        />
+      )}
       <Footer />
     </div>
   );

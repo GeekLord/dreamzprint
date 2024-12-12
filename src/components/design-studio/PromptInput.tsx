@@ -125,7 +125,7 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
           💡 <span className="font-medium">Pro tips:</span>
         </p>
         <ul className="list-disc list-inside mt-2 space-y-1">
-          <li>For better results, first describe your design idea, then click "Optimize for Product" to enhance your prompt.</li>
+          <li>For better results, first describe your design idea, then click "AI Idea Optimizer" to enhance your prompt.</li>
           <li>Upload an inspiration image to guide the AI in creating designs that match your vision. The AI will use it as a reference for style, colors, and composition.</li>
         </ul>
       </div>
@@ -189,7 +189,6 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
           </span>
         </div>
 
-        {/* Image Preview */}
         {previewUrl && (
           <div className="relative w-32 h-32">
             <img

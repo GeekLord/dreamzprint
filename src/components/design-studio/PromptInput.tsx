@@ -155,7 +155,7 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
           className="flex-shrink-0"
         >
           <Sparkles className={`h-4 w-4 mr-2 ${isGeneratingPrompt ? 'animate-pulse' : ''}`} />
-          Optimize for Product
+          AI Idea Optimizer
         </Button>
       </div>
       <Textarea

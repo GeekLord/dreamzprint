@@ -19,7 +19,7 @@ export const tshirtProducts: Product[] = [
     category: "T-Shirts",
     description: "Soft blend fabric with modern cut",
     price: "$29.99",
-    image: "https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/2ecb0533-68aa-49ea-be4c-90ab318cc2fa.png",
     colors: ["#FFFFFF", "#000000", "#F2FCE2", "#FFDEE2", "#D3E4FD"],
     overlayPosition: {
       top: "22%",

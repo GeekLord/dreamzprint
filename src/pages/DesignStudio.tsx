@@ -41,63 +41,26 @@ const DesignStudio = () => {
 
     setIsImprovingPrompt(true);
     try {
-      const ws = new WebSocket("wss://ws-api.runware.ai/v1");
-      
-      const taskUUID = crypto.randomUUID();
-      
-      await new Promise((resolve, reject) => {
-        ws.onopen = () => {
-          console.log("WebSocket connected for prompt improvement");
-          const messages = [
-            {
-              taskType: "authentication",
-              apiKey: apiKey
-            },
-            {
-              taskType: "promptImprovement",
-              taskUUID: taskUUID,
-              prompt: prompt
-            }
-          ];
-          ws.send(JSON.stringify(messages));
-        };
-
-        ws.onmessage = (event) => {
-          console.log("Received prompt improvement response:", event.data);
-          const response = JSON.parse(event.data);
-          
-          if (response.error || response.errors) {
-            const errorMessage = response.errorMessage || response.errors?.[0]?.message || "Failed to improve prompt";
-            reject(new Error(errorMessage));
-            return;
-          }
-
-          if (response.data) {
-            const improvedPromptData = response.data.find(
-              (item: any) => item.taskType === "promptImprovement" && item.taskUUID === taskUUID
-            );
-            
-            if (improvedPromptData?.improvedPrompt) {
-              setPrompt(improvedPromptData.improvedPrompt);
-              resolve(improvedPromptData.improvedPrompt);
-            } else {
-              reject(new Error("No improved prompt received"));
-            }
-          }
-        };
-
-        ws.onerror = (error) => {
-          console.error("WebSocket error during prompt improvement:", error);
-          reject(new Error("Connection error"));
-        };
-
-        // Set a timeout for the request
-        setTimeout(() => {
-          reject(new Error("Request timed out"));
-          ws.close();
-        }, 30000);
+      const response = await fetch("https://api.runware.ai/v1/improve-prompt", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({ prompt }),
       });
 
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to improve prompt");
+      }
+
+      if (!data.improvedPrompt) {
+        throw new Error("Invalid response from server");
+      }
+
+      setPrompt(data.improvedPrompt);
       toast.success("Prompt improved successfully!");
     } catch (error) {
       console.error("Error improving prompt:", error);

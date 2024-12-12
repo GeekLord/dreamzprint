@@ -47,9 +47,11 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
         }
       }
 
-      const promptText = `Create a detailed, product-optimized design prompt for a ${productType} based on this description: "${prompt}". 
-      Focus on making the design visually appealing and suitable for printing on ${productType}s.
-      Consider contrast, readability, and printing limitations.`;
+      const promptText = `Create a concise, print-ready design description for a ${productType} (max 50 words). 
+      Base it on this idea: "${prompt}". 
+      Focus on visual elements that will print well. 
+      Consider contrast and readability. 
+      Avoid complex gradients or tiny details.`;
 
       const response = await fetch(
         'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=' + apiKey,

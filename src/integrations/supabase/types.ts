@@ -54,60 +54,6 @@ export type Database = {
         }
         Relationships: []
       }
-      products: {
-        Row: {
-          category: string
-          created_at: string | null
-          description: string
-          id: string
-          image: string
-          price: number
-          title: string
-        }
-        Insert: {
-          category: string
-          created_at?: string | null
-          description: string
-          id?: string
-          image: string
-          price: number
-          title: string
-        }
-        Update: {
-          category?: string
-          created_at?: string | null
-          description?: string
-          id?: string
-          image?: string
-          price?: number
-          title?: string
-        }
-        Relationships: []
-      }
-      profiles: {
-        Row: {
-          created_at: string
-          email: string
-          id: string
-          is_admin: boolean | null
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          id: string
-          is_admin?: boolean | null
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          id?: string
-          is_admin?: boolean | null
-          updated_at?: string
-        }
-        Relationships: []
-      }
     }
     Views: {
       [_ in never]: never

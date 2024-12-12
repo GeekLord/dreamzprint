@@ -1,26 +1,5 @@
-export interface Product {
-  id: string;
-  title: string;
-  category: string;
-  description: string;
-  price: number; // Changed from string to number to match database
-  image: string;
-  created_at?: string;
-  colors?: string[]; // Added for UI components
-  overlayPosition?: {
-    top: string;
-    left: string;
-    width: string;
-  };
-}
-
-// Create a separate type for the product catalog display
-export interface ProductCatalog {
-  category: string;
-  items: Product[];
-}
-
-// Import all product data
+// First, let's split this large file into smaller ones for better maintainability
+import { type Product } from './productTypes';
 import { tshirtProducts } from './products/tshirts';
 import { hoodieProducts } from './products/hoodies';
 import { sweatshirtProducts } from './products/sweatshirts';
@@ -30,8 +9,13 @@ import { photoBookProducts } from './products/photoBooks';
 import { canvasPrintProducts } from './products/canvasPrints';
 import { toteBagProducts } from './products/toteBags';
 
-// Export the product catalog
-export const products: ProductCatalog[] = [
+export type { Product };
+export type ProductCategory = {
+  category: string;
+  items: Product[];
+};
+
+export const products: ProductCategory[] = [
   {
     category: "T-Shirts",
     items: tshirtProducts

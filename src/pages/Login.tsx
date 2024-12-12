@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
@@ -9,58 +9,27 @@ import Footer from "../components/Footer";
 
 const Login = () => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
-        // Check if user is admin
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', session.user.id)
-          .single();
-
-        if (location.pathname.startsWith('/admin')) {
-          if (profile?.is_admin) {
-            navigate("/admin");
-          } else {
-            navigate("/");
-          }
-        } else {
-          navigate("/design");
-        }
+        navigate("/design");
       }
     };
 
     checkAuth();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (session) {
-        // Check if user is admin
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', session.user.id)
-          .single();
-
-        if (location.pathname.startsWith('/admin')) {
-          if (profile?.is_admin) {
-            navigate("/admin");
-          } else {
-            navigate("/");
-          }
-        } else {
-          navigate("/design");
-        }
+        navigate("/design");
       }
     });
 
     return () => {
       subscription.unsubscribe();
     };
-  }, [navigate, location.pathname]);
+  }, [navigate]);
 
   return (
     <div className="min-h-screen">

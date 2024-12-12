@@ -1,12 +1,11 @@
 export interface Product {
-  id: string; // Added to match database schema
   title: string;
   category: string;
   description: string;
-  price: number;
+  price: string;
   image: string;
   colors?: string[];
-  overlayPosition?: {
+  overlayPosition: {
     top: string;
     left: string;
     width: string;

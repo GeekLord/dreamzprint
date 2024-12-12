@@ -5,7 +5,7 @@ const products = [
   {
     id: 1,
     name: "Custom T-Shirts",
-    image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/c5678c08-dbf5-4839-9ef5-e93b7419d162.png",
     price: "From $24.99",
     description: "Create your own unique t-shirt designs"
   },
@@ -26,28 +26,28 @@ const products = [
   {
     id: 4,
     name: "Custom Mugs",
-    image: "https://images.unsplash.com/photo-1577937927133-66ef06acdf18?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/556d287d-9c39-40b9-93dd-bd74c6af757b.png",
     price: "From $14.99",
     description: "Start your day with personalized drinkware"
   },
   {
     id: 5,
     name: "Phone Cases",
-    image: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/3a6714e1-2dc9-4471-bb5e-1b0f53496728.png",
     price: "From $19.99",
     description: "Protect your device with style"
   },
   {
     id: 6,
     name: "Canvas Prints",
-    image: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/6138f197-d611-4c41-8ce5-a621360dfaa7.png",
     price: "From $49.99",
     description: "Gallery-quality canvas prints"
   },
   {
     id: 7,
     name: "Hoodies",
-    image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/aa2fcc27-196a-4ef7-91f9-01332cbb6a9e.png",
     price: "From $39.99",
     description: "Cozy custom hoodies for any occasion"
   },
@@ -85,6 +85,7 @@ const FeaturedProducts = () => {
                   src={product.image}
                   alt={product.name}
                   className="h-full w-full object-cover object-center"
+                  loading="lazy"
                 />
               </div>
               <div className="mt-4">

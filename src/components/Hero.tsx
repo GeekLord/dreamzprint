@@ -12,7 +12,7 @@ const Hero = () => {
               Beautiful Prints
             </span>
           </h1>
-          <p className="mt-3 max-w-md mx-auto text-base text-white sm:text-lg md:mt-5 md:text-xl md:max-w-3xl font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]">
+          <p className="mt-3 max-w-md mx-auto text-base text-[#222226] sm:text-lg md:mt-5 md:text-xl md:max-w-3xl font-semibold bg-white/80 backdrop-blur-sm rounded-lg p-4 shadow-lg">
             Create stunning designs with AI-powered tools and bring them to life on premium products.
             From t-shirts to wall art, make your imagination tangible.
           </p>
@@ -26,7 +26,7 @@ const Hero = () => {
             </Link>
             <Link
               to="/products"
-              className="mt-3 sm:mt-0 inline-flex items-center px-8 py-3 border-2 border-white text-base font-medium rounded-full text-white hover:bg-white hover:text-[#8B5CF6] transition-all duration-300 transform hover:scale-105 shadow-lg"
+              className="mt-3 sm:mt-0 inline-flex items-center px-8 py-3 border-2 border-[#8B5CF6] text-base font-medium rounded-full text-[#8B5CF6] bg-white/90 hover:bg-[#8B5CF6] hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg backdrop-blur-sm"
             >
               Browse Products
             </Link>

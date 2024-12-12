@@ -12,10 +12,31 @@ const App = () => {
   useEffect(() => {
     // Check for system preference and stored theme
     const storedTheme = localStorage.getItem('theme');
+    const root = document.documentElement;
+    
     if (storedTheme === 'dark' || 
         (!storedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark');
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
     }
+
+    // Listen for theme changes
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'class') {
+          const isDark = root.classList.contains('dark');
+          document.body.style.backgroundColor = isDark ? 'hsl(222.2 84% 4.9%)' : 'white';
+          document.body.style.color = isDark ? 'hsl(210 40% 98%)' : 'hsl(222.2 84% 4.9%)';
+        }
+      });
+    });
+
+    observer.observe(root, {
+      attributes: true
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   return (

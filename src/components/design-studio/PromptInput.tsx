@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Wand2, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -13,13 +13,18 @@ interface PromptInputProps {
   isImprovingPrompt: boolean;
 }
 
-const PromptInput = ({ prompt, setPrompt, onImprove, isImprovingPrompt }: PromptInputProps) => {
+const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
   const [productType, setProductType] = useState("t-shirt");
   const [isGeneratingPrompt, setIsGeneratingPrompt] = useState(false);
 
   const generateProductPrompt = async () => {
     if (!prompt.trim()) {
       toast.error("Please enter a design description first");
+      return;
+    }
+
+    if (!supabase) {
+      toast.error("Supabase client is not initialized. Please check your environment variables.");
       return;
     }
 
@@ -34,6 +39,10 @@ const PromptInput = ({ prompt, setPrompt, onImprove, isImprovingPrompt }: Prompt
 
       if (error) {
         throw error;
+      }
+
+      if (!data?.improvedPrompt) {
+        throw new Error("Invalid response from server");
       }
 
       setPrompt(data.improvedPrompt);
@@ -73,24 +82,12 @@ const PromptInput = ({ prompt, setPrompt, onImprove, isImprovingPrompt }: Prompt
           Optimize for Product
         </Button>
       </div>
-      <div className="relative">
-        <Textarea
-          placeholder="Describe your design idea..."
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          className="min-h-[100px] pr-10"
-        />
-        <Button
-          size="icon"
-          variant="ghost"
-          className="absolute right-2 top-2"
-          onClick={onImprove}
-          disabled={isImprovingPrompt || !prompt.trim()}
-          title="Improve prompt with AI"
-        >
-          <Wand2 className={`h-4 w-4 ${isImprovingPrompt ? 'animate-pulse' : ''}`} />
-        </Button>
-      </div>
+      <Textarea
+        placeholder="Describe your design idea..."
+        value={prompt}
+        onChange={(e) => setPrompt(e.target.value)}
+        className="min-h-[100px]"
+      />
     </div>
   );
 };

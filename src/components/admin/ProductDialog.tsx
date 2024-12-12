@@ -46,7 +46,7 @@ export const ProductDialog = ({
       title: product?.title || "",
       category: product?.category || "",
       description: product?.description || "",
-      price: product?.price?.toString() || "", // Convert number to string for form
+      price: product?.price ? product.price.toString() : "", // Convert number to string for form
       image: product?.image || "",
     },
   });
@@ -56,7 +56,13 @@ export const ProductDialog = ({
       if (product) {
         const { error } = await supabase
           .from('products')
-          .update(values)
+          .update({
+            title: values.title,
+            category: values.category,
+            description: values.description,
+            price: values.price,
+            image: values.image,
+          })
           .eq('id', product.id);
 
         if (error) throw error;
@@ -64,7 +70,13 @@ export const ProductDialog = ({
       } else {
         const { error } = await supabase
           .from('products')
-          .insert([values]);
+          .insert([{
+            title: values.title,
+            category: values.category,
+            description: values.description,
+            price: values.price,
+            image: values.image,
+          }]);
 
         if (error) throw error;
         toast.success('Product created successfully');

@@ -28,11 +28,21 @@ export const ProductCard = ({ product, selectedDesign, onOrder }: ProductCardPro
     return product.image;
   };
 
+  // Format price safely
+  const formatPrice = (price: number) => {
+    try {
+      return `$${Number(price).toFixed(2)}`;
+    } catch (error) {
+      console.error('Error formatting price:', error);
+      return `$${price}`;
+    }
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 transition-transform hover:scale-105">
       <h3 className="text-xl font-semibold mb-2">{product.title}</h3>
       <p className="text-gray-600 mb-4">{product.description}</p>
-      <p className="text-primary font-medium mb-4">${product.price.toFixed(2)}</p>
+      <p className="text-primary font-medium mb-4">{formatPrice(product.price)}</p>
       
       {product.colors && (
         <div className="flex gap-2 mb-4">

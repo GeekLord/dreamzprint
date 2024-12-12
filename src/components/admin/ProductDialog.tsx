@@ -21,7 +21,9 @@ const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
   category: z.string().min(1, "Category is required"),
   description: z.string().min(1, "Description is required"),
-  price: z.string().min(1, "Price is required"),
+  price: z.string()
+    .min(1, "Price is required")
+    .transform((val) => parseFloat(val)), // Transform string to number
   image: z.string().url("Must be a valid URL").min(1, "Image URL is required"),
 });
 
@@ -44,7 +46,7 @@ export const ProductDialog = ({
       title: product?.title || "",
       category: product?.category || "",
       description: product?.description || "",
-      price: product?.price || "",
+      price: product?.price?.toString() || "", // Convert number to string for form
       image: product?.image || "",
     },
   });
@@ -131,7 +133,7 @@ export const ProductDialog = ({
                 <FormItem>
                   <FormLabel>Price</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" />
+                    <Input {...field} type="number" step="0.01" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

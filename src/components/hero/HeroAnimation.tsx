@@ -1,21 +1,38 @@
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { useRef } from "react";
+import { useRef, Suspense } from "react";
 import * as THREE from "three";
+
+// Error boundary component
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return null; // Render nothing if there's an error
+    }
+    return this.props.children;
+  }
+}
 
 const FloatingPrint = () => {
   const meshRef = useRef<THREE.Mesh>(null);
 
   return (
     <mesh 
-      ref={meshRef} 
-      castShadow
+      ref={meshRef}
       position={[0, 0, 0]}
-      rotation={[0, 0, 0]}
     >
       <torusGeometry args={[1.5, 0.4, 16, 100]} />
       <meshStandardMaterial
-        color={new THREE.Color("#6366F1")}
+        color="#6366F1"
         roughness={0.5}
         metalness={0.8}
       />
@@ -28,7 +45,7 @@ const Scene = () => {
     <>
       <ambientLight intensity={0.5} />
       <directionalLight position={[10, 10, 5]} intensity={1} />
-      <group position={[0, 0, 0]}>
+      <group>
         <FloatingPrint />
       </group>
       <OrbitControls
@@ -44,23 +61,27 @@ const Scene = () => {
 const HeroAnimation = () => {
   return (
     <div className="absolute inset-0 -z-10">
-      <Canvas
-        camera={{ 
-          position: [0, 0, 5], 
-          fov: 75,
-          near: 0.1,
-          far: 1000
-        }}
-        className="h-full"
-        gl={{ 
-          antialias: true,
-          alpha: true,
-          powerPreference: "high-performance"
-        }}
-        dpr={[1, 2]}
-      >
-        <Scene />
-      </Canvas>
+      <ErrorBoundary>
+        <Canvas
+          camera={{ 
+            position: [0, 0, 5], 
+            fov: 75,
+            near: 0.1,
+            far: 1000
+          }}
+          className="h-full w-full"
+          gl={{ 
+            antialias: true,
+            alpha: true,
+            powerPreference: "default"
+          }}
+          dpr={window.devicePixelRatio}
+        >
+          <Suspense fallback={null}>
+            <Scene />
+          </Suspense>
+        </Canvas>
+      </ErrorBoundary>
     </div>
   );
 };

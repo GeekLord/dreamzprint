@@ -6,7 +6,7 @@ export const photoBookProducts: Product[] = [
     category: "Photo Books",
     description: "Premium quality photo album",
     price: "$39.99",
-    image: "/lovable-uploads/c5678c08-dbf5-4839-9ef5-e93b7419d162.png",
+    image: "https://images.unsplash.com/photo-1589998059171-988d887df646?auto=format&fit=crop&q=80",
     overlayPosition: {
       top: "5%",
       left: "5%",
@@ -18,7 +18,7 @@ export const photoBookProducts: Product[] = [
     category: "Photo Books",
     description: "Flexible and lightweight photo book",
     price: "$29.99",
-    image: "/lovable-uploads/c5678c08-dbf5-4839-9ef5-e93b7419d162.png",
+    image: "https://images.unsplash.com/photo-1589998059171-988d887df646?auto=format&fit=crop&q=80",
     overlayPosition: {
       top: "5%",
       left: "5%",

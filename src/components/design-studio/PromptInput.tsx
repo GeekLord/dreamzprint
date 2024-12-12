@@ -36,9 +36,6 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
         body: {
           description: prompt,
           productType: productType,
-        },
-        headers: {
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
         }
       });
 

@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 
-const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+const SENDGRID_API_KEY = Deno.env.get("SENDGRID_API_KEY");
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -16,6 +16,7 @@ interface ContactFormData {
 }
 
 const handler = async (req: Request): Promise<Response> => {
+  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -34,35 +35,48 @@ const handler = async (req: Request): Promise<Response> => {
       ${formData.message}
     `;
 
-    const res = await fetch("https://api.resend.com/emails", {
+    const res = await fetch("https://api.sendgrid.com/v3/mail/send", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${RESEND_API_KEY}`,
+        Authorization: `Bearer ${SENDGRID_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "DreamzPrint Contact Form <onboarding@resend.dev>",
-        to: ["cyber.mitra@gmail.com"],
+        personalizations: [
+          {
+            to: [{ email: "cyber.mitra@gmail.com" }],
+          },
+        ],
+        from: { email: "contact@dreamzprint.com" },
         subject: `Contact Form: ${formData.subject}`,
-        text: emailContent,
+        content: [
+          {
+            type: "text/plain",
+            value: emailContent,
+          },
+        ],
+        reply_to: { email: formData.email, name: formData.name },
       }),
     });
 
     if (res.ok) {
-      const data = await res.json();
-      return new Response(JSON.stringify(data), {
-        status: 200,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      console.log("Email sent successfully via SendGrid");
+      return new Response(
+        JSON.stringify({ message: "Email sent successfully" }),
+        {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
     } else {
       const error = await res.text();
-      console.error("Error sending email:", error);
+      console.error("SendGrid API error:", error);
       return new Response(JSON.stringify({ error }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error in send-contact-email function:", error);
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,

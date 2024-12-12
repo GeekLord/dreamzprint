@@ -2,7 +2,7 @@
 const encode = (str: string) => btoa(str);
 const decode = (str: string) => atob(str);
 
-export const RUNWARE_API_KEY = decode("RTZORnBycXJNZEFVeHg1SlpoUkdET3RLQ2t3aWtXdG8=");
+export const RUNWARE_API_KEY = decode("QmtZRElCdGdCaGZlRDZwZ2txVVJQdGlrUm0ybnNDQkQ=");
 export const GEMINI_API_KEY = decode("QUl6YVN5QWZHenF1TWZmc09kbUt0amRoQUttcmhuRzdGakkwWk1z");
 
 // Function to get API keys

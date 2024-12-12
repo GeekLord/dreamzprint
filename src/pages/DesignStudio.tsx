@@ -8,7 +8,6 @@ import { toast } from "sonner";
 import { RunwareService, GenerateImageParams } from "../services/runware";
 import PromptInput from "../components/design-studio/PromptInput";
 import DesignPreview from "../components/design-studio/DesignPreview";
-import ApiKeyManager from "../components/design-studio/ApiKeyManager";
 
 const DesignStudio = () => {
   const [prompt, setPrompt] = useState("");
@@ -137,26 +136,20 @@ const DesignStudio = () => {
                 onImprove={improvePrompt}
                 isImprovingPrompt={isImprovingPrompt}
               />
-              <div className="flex gap-2">
-                <Button
-                  onClick={handleGenerate}
-                  disabled={isGenerating}
-                  className="flex-1"
-                >
-                  {isGenerating ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Generating...
-                    </>
-                  ) : (
-                    "Generate Design"
-                  )}
-                </Button>
-                <ApiKeyManager
-                  onApiKeyUpdate={() => {}}
-                  disabled={isGenerating}
-                />
-              </div>
+              <Button
+                onClick={handleGenerate}
+                disabled={isGenerating}
+                className="w-full"
+              >
+                {isGenerating ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  "Generate Design"
+                )}
+              </Button>
             </div>
           </Card>
 

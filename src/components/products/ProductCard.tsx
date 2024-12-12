@@ -11,6 +11,23 @@ interface ProductCardProps {
 export const ProductCard = ({ product, selectedDesign, onOrder }: ProductCardProps) => {
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0]);
 
+  // Function to get the color-specific image URL
+  const getColorSpecificImage = (color: string) => {
+    // If it's a t-shirt product, return color-specific image
+    if (product.category === "T-Shirts") {
+      const colorMap: { [key: string]: string } = {
+        "#FFFFFF": "/lovable-uploads/2ecb0533-68aa-49ea-be4c-90ab318cc2fa.png", // White t-shirt
+        "#000000": "/lovable-uploads/black-tshirt.png", // Black t-shirt
+        "#8E9196": "/lovable-uploads/gray-tshirt.png", // Gray t-shirt
+        "#D6BCFA": "/lovable-uploads/purple-tshirt.png", // Purple t-shirt
+        "#FDE1D3": "/lovable-uploads/peach-tshirt.png", // Peach t-shirt
+      };
+      return colorMap[color] || product.image;
+    }
+    // For other products, return the default image
+    return product.image;
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 transition-transform hover:scale-105">
       <h3 className="text-xl font-semibold mb-2">{product.title}</h3>
@@ -35,8 +52,8 @@ export const ProductCard = ({ product, selectedDesign, onOrder }: ProductCardPro
       
       <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-100 mb-4">
         <img 
-          src={product.image} 
-          alt={product.title}
+          src={selectedColor ? getColorSpecificImage(selectedColor) : product.image}
+          alt={`${product.title} in ${selectedColor || 'default'} color`}
           className="w-full h-full object-cover"
         />
         {selectedDesign && (

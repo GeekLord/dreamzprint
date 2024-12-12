@@ -7,9 +7,19 @@ interface ApiKeyManagerProps {
   disabled?: boolean;
 }
 
+const DEFAULT_API_KEY = "YOUR_DEFAULT_RUNWARE_API_KEY"; // Replace this with your actual API key
+
 const ApiKeyManager = ({ onApiKeyUpdate, disabled }: ApiKeyManagerProps) => {
   const handleResetApiKey = () => {
-    localStorage.removeItem("runware_api_key");
+    // If there's no API key stored, use the default one
+    if (!localStorage.getItem("runware_api_key")) {
+      localStorage.setItem("runware_api_key", DEFAULT_API_KEY);
+      toast.success("Using default API key");
+      onApiKeyUpdate();
+      return;
+    }
+
+    // Otherwise, allow manual input for advanced users
     const key = window.prompt(
       "Please enter your Runware API key (get one at https://my.runware.ai/signup):"
     );

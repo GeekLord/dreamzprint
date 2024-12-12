@@ -4,6 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Wand2, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 interface PromptInputProps {
   prompt: string;
@@ -24,22 +25,17 @@ const PromptInput = ({ prompt, setPrompt, onImprove, isImprovingPrompt }: Prompt
 
     setIsGeneratingPrompt(true);
     try {
-      const response = await fetch("https://wycwyqxiozwjlutwypjx.supabase.co/functions/v1/generate-product-prompt", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      const { data, error } = await supabase.functions.invoke('generate-product-prompt', {
+        body: {
           description: prompt,
           productType: productType,
-        }),
+        },
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to generate prompt");
+      if (error) {
+        throw error;
       }
 
-      const data = await response.json();
       setPrompt(data.improvedPrompt);
       toast.success("Generated product-optimized prompt!");
     } catch (error) {

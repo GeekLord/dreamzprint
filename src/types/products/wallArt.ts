@@ -2,6 +2,18 @@ import type { Product } from '../productTypes';
 
 export const wallArtProducts: Product[] = [
   {
+    title: "Vibrant Feather Canvas",
+    category: "Wall Art",
+    description: "Stunning abstract feather artwork with vibrant colors - perfect for modern interiors",
+    price: "$299.99",
+    image: "/lovable-uploads/6138f197-d611-4c41-8ce5-a621360dfaa7.png",
+    overlayPosition: {
+      top: "10%",
+      left: "10%",
+      width: "80%"
+    }
+  },
+  {
     title: "Canvas Print",
     category: "Wall Art",
     description: "Gallery-quality canvas prints",

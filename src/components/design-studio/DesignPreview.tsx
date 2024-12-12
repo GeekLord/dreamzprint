@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import ImageEditor from "./ImageEditor";
 
 interface DesignPreviewProps {
   imageUrl: string | null;
@@ -12,10 +13,14 @@ const DesignPreview = ({ imageUrl, isLoading }: DesignPreviewProps) => {
 
   const handleOrder = () => {
     if (imageUrl) {
-      // Store the design URL in localStorage to access it in the products page
       localStorage.setItem('selectedDesign', imageUrl);
       navigate('/products');
     }
+  };
+
+  const handleImageUpdate = (newImageUrl: string) => {
+    // Store the updated image URL in localStorage
+    localStorage.setItem('selectedDesign', newImageUrl);
   };
 
   return (
@@ -34,13 +39,19 @@ const DesignPreview = ({ imageUrl, isLoading }: DesignPreviewProps) => {
         )}
       </div>
       {imageUrl && !isLoading && (
-        <Button 
-          className="w-full" 
-          onClick={handleOrder}
-        >
-          <ShoppingCart className="mr-2 h-4 w-4" />
-          Order with this design
-        </Button>
+        <>
+          <ImageEditor 
+            imageUrl={imageUrl} 
+            onImageUpdate={handleImageUpdate}
+          />
+          <Button 
+            className="w-full" 
+            onClick={handleOrder}
+          >
+            <ShoppingCart className="mr-2 h-4 w-4" />
+            Order with this design
+          </Button>
+        </>
       )}
     </div>
   );

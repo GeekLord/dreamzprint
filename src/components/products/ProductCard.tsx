@@ -26,13 +26,15 @@ export const ProductCard = ({ product, selectedDesign, onOrder }: ProductCardPro
     });
 
     // Load the product image
-    FabricImage.fromURL(product.image, (img) => {
-      img.scale(1);
+    FabricImage.fromURL(product.image, {
+      crossOrigin: 'anonymous',
+    }).then((img) => {
+      img.scaleToWidth(canvas.width!);
+      canvas.add(img);
       img.set({
         selectable: false,
         evented: false,
       });
-      canvas.add(img);
       canvas.renderAll();
     }).catch(error => {
       console.error('Error loading product image:', error);
@@ -57,12 +59,12 @@ export const ProductCard = ({ product, selectedDesign, onOrder }: ProductCardPro
     existingDesigns.forEach(obj => fabricCanvas.remove(obj));
 
     // Add new design image with smaller scale
-    FabricImage.fromURL(selectedDesign, (img) => {
-      // Scale the design to be 30% of the canvas size
+    FabricImage.fromURL(selectedDesign, {
+      crossOrigin: 'anonymous',
+    }).then((img) => {
       const scaleFactor = 0.3;
       img.scale(scaleFactor);
       
-      // Center the design on the product
       img.set({
         left: fabricCanvas.width! * 0.35,
         top: fabricCanvas.height! * 0.35,

@@ -17,10 +17,10 @@ const products = [
   },
   {
     id: 3,
-    name: "Photo Books",
+    name: "Photo Print",
     image: "https://images.unsplash.com/photo-1589998059171-988d887df646?auto=format&fit=crop&q=80",
     price: "From $39.99",
-    description: "Preserve your memories in style"
+    description: "High-quality photo prints for your memories"
   },
   {
     id: 4,

@@ -10,7 +10,7 @@ const Footer = () => {
     Products: [
       { name: "T-Shirts", path: "/products" },
       { name: "Wall Art", path: "/products" },
-      { name: "Photo Books", path: "/products" },
+      { name: "Photo Print", path: "/products" },
       { name: "Gifts", path: "/products" },
     ],
     Legal: [

@@ -37,9 +37,13 @@ serve(async (req) => {
       throw new Error('API key configuration missing')
     }
 
-    const prompt = `Create a detailed, product-optimized design prompt for a ${productType} based on this description: "${description}". 
-    Focus on making the design visually appealing and suitable for printing on ${productType}s.
-    Consider contrast, readability, and printing limitations.`
+    const prompt = `Create a print-ready design description (max 50 words) for this idea: "${description}".
+    Focus on the artwork/graphic only, no product.
+    The design will be printed on a ${productType}, so ensure:
+    - High contrast elements
+    - Clear, readable design
+    - No gradients or tiny details
+    - Clean edges and shapes`
 
     console.log('Sending request to Gemini API')
     const response = await fetch(

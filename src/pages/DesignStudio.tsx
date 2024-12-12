@@ -8,74 +8,13 @@ import { toast } from "sonner";
 import { RunwareService, GenerateImageParams } from "../services/runware";
 import PromptInput from "../components/design-studio/PromptInput";
 import DesignPreview from "../components/design-studio/DesignPreview";
+import { supabase } from "@/integrations/supabase/client";
 
 const DesignStudio = () => {
   const [prompt, setPrompt] = useState("");
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isImprovingPrompt, setIsImprovingPrompt] = useState(false);
-
-  const requestApiKey = () => {
-    const key = window.prompt(
-      "Please enter your Runware API key (get one at https://my.runware.ai/signup):"
-    );
-    if (key?.trim()) {
-      localStorage.setItem("runware_api_key", key.trim());
-      return key.trim();
-    }
-    return null;
-  };
-
-  const improvePrompt = async () => {
-    if (!prompt.trim()) {
-      toast.error("Please enter a design description first");
-      return;
-    }
-
-    const apiKey = localStorage.getItem("runware_api_key");
-    if (!apiKey) {
-      toast.error("API key is required to improve prompts");
-      return;
-    }
-
-    setIsImprovingPrompt(true);
-    try {
-      const response = await fetch("https://api.runware.ai/v1/improve-prompt", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({ prompt }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to improve prompt");
-      }
-
-      if (!data.improvedPrompt) {
-        throw new Error("Invalid response from server");
-      }
-
-      setPrompt(data.improvedPrompt);
-      toast.success("Prompt improved successfully!");
-    } catch (error) {
-      console.error("Error improving prompt:", error);
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Failed to improve prompt. Please try again."
-      );
-
-      if (error instanceof Error && error.message.includes("Missing API Key")) {
-        localStorage.removeItem("runware_api_key");
-      }
-    } finally {
-      setIsImprovingPrompt(false);
-    }
-  };
 
   const handleGenerate = async () => {
     if (!prompt.trim()) {
@@ -85,14 +24,12 @@ const DesignStudio = () => {
 
     setIsGenerating(true);
     try {
-      let apiKey = localStorage.getItem("runware_api_key");
+      const { data: { apiKey }, error } = await supabase.functions.invoke('get-secret', {
+        body: { secretName: 'RUNWARE_API_KEY' }
+      });
 
-      if (!apiKey?.trim()) {
-        apiKey = requestApiKey();
-        if (!apiKey) {
-          toast.error("API key is required to generate images");
-          return;
-        }
+      if (error || !apiKey) {
+        throw new Error('Failed to get API key');
       }
 
       const runwareService = new RunwareService(apiKey);
@@ -110,12 +47,7 @@ const DesignStudio = () => {
       toast.success("Design generated successfully!");
     } catch (error) {
       console.error("Error generating image:", error);
-      if (error.toString().includes("Missing API Key")) {
-        localStorage.removeItem("runware_api_key");
-        toast.error("Invalid API key. Please try again with a valid key.");
-      } else {
-        toast.error("Failed to generate design. Please try again.");
-      }
+      toast.error("Failed to generate design. Please try again.");
     } finally {
       setIsGenerating(false);
     }
@@ -133,7 +65,7 @@ const DesignStudio = () => {
               <PromptInput
                 prompt={prompt}
                 setPrompt={setPrompt}
-                onImprove={improvePrompt}
+                onImprove={() => {}}
                 isImprovingPrompt={isImprovingPrompt}
               />
               <Button

@@ -38,7 +38,7 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
           productType: productType,
         },
         headers: {
-          apikey: supabase.supabaseKey
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
         }
       });
 

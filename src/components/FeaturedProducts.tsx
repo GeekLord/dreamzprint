@@ -11,7 +11,7 @@ const products = [
   {
     id: 2,
     name: "Wall Art",
-    image: "https://images.unsplash.com/photo-1513519245088-0e12902e35a6?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/2dc945e6-b664-46da-8a5c-24e2926fd585.png",
     price: "From $29.99",
     description: "Transform your space with custom wall art"
   },

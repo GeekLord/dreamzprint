@@ -45,7 +45,7 @@ export const tshirtProducts: Product[] = [
     category: "T-Shirts",
     description: "Perfect for layering or cooler days",
     price: "$32.99",
-    image: "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/aa2fcc27-196a-4ef7-91f9-01332cbb6a9e.png",
     colors: ["#FFFFFF", "#000000", "#9b87f5", "#FEC6A1"],
     overlayPosition: {
       top: "23%",

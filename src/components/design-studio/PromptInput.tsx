@@ -4,7 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Sparkles } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { GEMINI_API_KEY } from "@/services/api-keys";
 
 interface PromptInputProps {
   prompt: string;
@@ -27,23 +27,35 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
     try {
       console.log("Generating product-optimized prompt for:", { description: prompt, productType });
 
-      const { data, error } = await supabase.functions.invoke('generate-product-prompt', {
-        body: {
-          description: prompt,
-          productType: productType
-        }
+      const response = await fetch('https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goog-api-key': GEMINI_API_KEY,
+        },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: `Create a design prompt for a ${productType} design based on this description: "${prompt}".
+              Focus on creating a standalone artistic design suitable for printing, without including the ${productType} itself.
+              Consider these printing requirements:
+              - High contrast and clear edges
+              - Appropriate size and placement for ${productType}
+              - No product mockups, just the design itself
+              - Simple, clean artwork that will print well`
+            }]
+          }]
+        })
       });
 
-      if (error) {
-        console.error('Edge function error:', error);
+      if (!response.ok) {
         throw new Error('Failed to generate prompt');
       }
 
-      if (!data?.improvedPrompt) {
-        throw new Error('Invalid response format from server');
-      }
+      const data = await response.json();
+      const improvedPrompt = data.candidates[0].content.parts[0].text;
 
-      setPrompt(data.improvedPrompt);
+      setPrompt(improvedPrompt);
       toast.success("Generated product-optimized prompt!");
     } catch (error) {
       console.error("Error generating prompt:", error);

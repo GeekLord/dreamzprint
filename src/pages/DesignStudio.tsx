@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { RunwareService, GenerateImageParams } from "../services/runware";
 import PromptInput from "../components/design-studio/PromptInput";
 import DesignPreview from "../components/design-studio/DesignPreview";
-import { supabase } from "@/integrations/supabase/client";
+import { RUNWARE_API_KEY } from "@/services/api-keys";
 
 const DesignStudio = () => {
   const [prompt, setPrompt] = useState("");
@@ -24,15 +24,7 @@ const DesignStudio = () => {
 
     setIsGenerating(true);
     try {
-      const { data: { apiKey }, error } = await supabase.functions.invoke('get-secret', {
-        body: { secretName: 'RUNWARE_API_KEY' }
-      });
-
-      if (error || !apiKey) {
-        throw new Error('Failed to get API key');
-      }
-
-      const runwareService = new RunwareService(apiKey);
+      const runwareService = new RunwareService(RUNWARE_API_KEY);
       const params: GenerateImageParams = {
         positivePrompt: prompt,
         model: "runware:100@1",

@@ -15,6 +15,7 @@ export interface GenerateImageParams {
   lora?: string[];
   width?: number;
   height?: number;
+  inspirationImage?: File;
 }
 
 export interface GeneratedImage {
@@ -118,6 +119,23 @@ export class RunwareService {
     });
   }
 
+  private async convertImageToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === 'string') {
+          // Remove the data URL prefix (e.g., "data:image/jpeg;base64,")
+          const base64String = reader.result.split(',')[1];
+          resolve(base64String);
+        } else {
+          reject(new Error('Failed to convert image to base64'));
+        }
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
   async generateImage(params: GenerateImageParams): Promise<GeneratedImage> {
     await this.connectionPromise;
 
@@ -128,8 +146,8 @@ export class RunwareService {
 
     const taskUUID = crypto.randomUUID();
     
-    return new Promise((resolve, reject) => {
-      const message = [{
+    return new Promise(async (resolve, reject) => {
+      let message: any = [{
         taskType: "imageInference",
         taskUUID,
         model: params.model || "runware:100@1",
@@ -144,6 +162,18 @@ export class RunwareService {
         lora: params.lora || [],
         ...params,
       }];
+
+      // If an inspiration image is provided, convert it to base64
+      if (params.inspirationImage) {
+        try {
+          const base64Image = await this.convertImageToBase64(params.inspirationImage);
+          message[0].inspirationImage = base64Image;
+        } catch (error) {
+          console.error("Error converting image to base64:", error);
+          reject(error);
+          return;
+        }
+      }
 
       if (!params.seed) {
         delete message[0].seed;

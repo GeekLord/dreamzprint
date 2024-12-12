@@ -136,18 +136,38 @@ const ImageEditor = ({ imageUrl, onImageUpdate }: ImageEditorProps) => {
     }
   };
 
+  const getFileExtensionFromUrl = (url: string): string => {
+    const extension = url.split('.').pop()?.toLowerCase() || 'png';
+    return extension === 'webp' ? 'webp' : 'png';
+  };
+
+  const sanitizePrompt = (prompt: string): string => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const promptText = urlParams.get('prompt') || 'design';
+    return promptText
+      .slice(0, 30)
+      .replace(/[^a-zA-Z0-9\s]/g, '')
+      .replace(/\s+/g, '_')
+      .toLowerCase();
+  };
+
   const handleDownload = async () => {
     try {
       const response = await fetch(imageUrl);
       const blob = await response.blob();
+      const fileExtension = getFileExtensionFromUrl(imageUrl);
+      const promptText = sanitizePrompt(window.location.search);
+      const fileName = `DreamzPrint_${promptText}.${fileExtension}`;
+      
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'design.png';
+      a.download = fileName;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
+      
       toast.success("Image downloaded successfully!");
     } catch (error) {
       console.error('Error downloading image:', error);

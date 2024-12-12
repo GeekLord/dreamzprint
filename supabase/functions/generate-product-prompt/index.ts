@@ -16,47 +16,44 @@ serve(async (req) => {
     const { description, productType } = await req.json()
     console.log('Processing request for:', { description, productType })
 
-    const openAIApiKey = Deno.env.get('OPENAI_API_KEY')
-    if (!openAIApiKey) {
-      throw new Error('OpenAI API key not configured')
+    const geminiApiKey = Deno.env.get('GEMINI_API_KEY')
+    if (!geminiApiKey) {
+      throw new Error('Gemini API key not configured')
     }
 
-    console.log('Calling OpenAI API...')
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    console.log('Calling Gemini API...')
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${geminiApiKey}`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${openAIApiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages: [
-          {
-            role: 'system',
-            content: `You are an expert at creating prompts for AI image generation that work well for printing on products like ${productType}s. 
-            Create prompts that:
-            - Are detailed and specific
-            - Work well for ${productType}s
-            - Include style guidance for clean, printable results
-            - Maintain appropriate contrast and readability
-            - Consider the product's printing limitations`
-          },
-          {
-            role: 'user',
-            content: `Create a detailed prompt for an AI image generator to create a design for a ${productType}. The design should be based on this description: "${description}"`
-          }
-        ],
-      }),
+        contents: [{
+          parts: [{
+            text: `You are an expert at creating prompts for AI image generation that work well for printing on products like ${productType}s. 
+            Create a detailed prompt for an AI image generator to create a design for a ${productType}. The design should be based on this description: "${description}"
+            
+            Make sure the prompt:
+            - Is detailed and specific
+            - Works well for ${productType}s
+            - Includes style guidance for clean, printable results
+            - Maintains appropriate contrast and readability
+            - Considers the product's printing limitations
+            
+            Return only the improved prompt text, nothing else.`
+          }]
+        }]
+      })
     })
 
     const data = await response.json()
-    console.log('OpenAI response:', data)
+    console.log('Gemini response:', data)
 
     if (!response.ok) {
       throw new Error(data.error?.message || 'Failed to generate prompt')
     }
 
-    const improvedPrompt = data.choices[0].message.content
+    const improvedPrompt = data.candidates[0].content.parts[0].text.trim()
 
     return new Response(
       JSON.stringify({ improvedPrompt }),

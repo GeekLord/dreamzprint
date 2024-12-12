@@ -43,7 +43,7 @@ serve(async (req) => {
           },
           {
             role: 'user',
-            content: `Create a detailed prompt for an AI image generator to create a design for a ${productType}. The design should be based on this description: "${description}". The result should work well when printed on the ${productType}.`
+            content: `Create a detailed prompt for an AI image generator to create a design for a ${productType}. The design should be based on this description: "${description}"`
           }
         ],
       }),

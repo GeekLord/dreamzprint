@@ -66,8 +66,15 @@ export const tshirtProducts: Product[] = [
     category: "T-Shirts",
     description: "Perfect for layering or cooler days",
     price: "$32.99",
-    image: "/lovable-uploads/aa2fcc27-196a-4ef7-91f9-01332cbb6a9e.png",
-    colors: ["#FFFFFF", "#000000", "#9b87f5", "#FEC6A1"],
+    image: "/lovable-uploads/34096e35-89ff-455f-8851-7fae9bb9a598.png", // White t-shirt
+    colors: ["#FFFFFF", "#000000", "#FFB6C1", "#E6E6FA", "#FFE4B5"],
+    colorImages: {
+      "#FFFFFF": "/lovable-uploads/34096e35-89ff-455f-8851-7fae9bb9a598.png",
+      "#000000": "/lovable-uploads/68b7985c-80e7-4528-816b-1ce9f599da18.png",
+      "#FFB6C1": "/lovable-uploads/6b01abf5-6f09-4c12-b6db-aa44cdd731c6.png",
+      "#E6E6FA": "/lovable-uploads/a1aa38d0-25cc-4334-818c-b8e6489a584c.png",
+      "#FFE4B5": "/lovable-uploads/a9bc9f1a-a387-400e-9f0d-2955224d5f6b.png"
+    },
     overlayPosition: {
       top: "23%",
       left: "28%",

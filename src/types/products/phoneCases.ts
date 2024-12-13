@@ -6,7 +6,7 @@ export const phoneCaseProducts: Product[] = [
     category: "Phone Cases",
     description: "Durable protection with style",
     price: "$19.99",
-    image: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/9f8f5b8b-5395-46d3-a4ad-d6980d4eb67c.png",
     colors: ["#000000", "#FFFFFF", "#FF69B4", "#4169E1", "#32CD32"],
     overlayPosition: {
       top: "15%",

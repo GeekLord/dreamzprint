@@ -11,7 +11,7 @@ const products = [
   {
     id: 2,
     name: "Wall Art",
-    image: "/lovable-uploads/2dc945e6-b664-46da-8a5c-24e2926fd585.png",
+    image: "/lovable-uploads/2fee0ab4-28bb-4210-84fc-707196506dba.png",
     price: "From $29.99",
     description: "Transform your space with custom wall art"
   },

@@ -19,6 +19,16 @@ import FAQ from "./pages/FAQ";
 
 const queryClient = new QueryClient();
 
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
+
 const MetaUpdater = () => {
   const location = useLocation();
 
@@ -110,6 +120,7 @@ const App = () => {
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <ScrollToTop />
           <MetaUpdater />
           <Routes>
             <Route path="/" element={<Index />} />

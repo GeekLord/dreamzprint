@@ -46,8 +46,15 @@ export const tshirtProducts: Product[] = [
     category: "T-Shirts",
     description: "Moisture-wicking fabric for active lifestyle",
     price: "$34.99",
-    image: "/lovable-uploads/c5678c08-dbf5-4839-9ef5-e93b7419d162.png",
-    colors: ["#0EA5E9", "#8B5CF6", "#F97316", "#403E43", "#FFFFFF"],
+    image: "/lovable-uploads/86e3111b-1093-438e-a71d-b9614ccdc674.png", // White t-shirt
+    colors: ["#FFFFFF", "#8E8E8E", "#87CEEB", "#FFA07A", "#E6E6FA"],
+    colorImages: {
+      "#FFFFFF": "/lovable-uploads/86e3111b-1093-438e-a71d-b9614ccdc674.png",
+      "#8E8E8E": "/lovable-uploads/b64f999e-2106-42bd-827d-c7f8ee99c021.png",
+      "#87CEEB": "/lovable-uploads/3e2fe5bf-a9c2-41d6-adb1-8681154a5591.png",
+      "#FFA07A": "/lovable-uploads/2fd3c51a-0cb3-4543-aec7-97fe1fcf527c.png",
+      "#E6E6FA": "/lovable-uploads/a8958422-0978-41b1-a2ed-17c20300eb2e.png"
+    },
     overlayPosition: {
       top: "20%",
       left: "30%",

@@ -27,6 +27,11 @@ const Navigation = () => {
                 src="/lovable-uploads/556d287d-9c39-40b9-93dd-bd74c6af757b.png" 
                 alt="DreamzPrint Logo" 
                 className="h-8 w-auto"
+                width={32}
+                height={32}
+                loading="eager"
+                fetchPriority="high"
+                decoding="sync"
               />
             </Link>
           </div>

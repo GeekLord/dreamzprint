@@ -46,7 +46,7 @@ const products = [
   {
     id: 7,
     name: "Hoodies",
-    image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/efdf0dd8-9cd6-4877-afca-60882343d831.png",
     price: "From $39.99",
     description: "Cozy custom hoodies for any occasion"
   },

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { SENDGRID_API_KEY } from "@/services/api-keys";
 
 interface FormData {
   name: string;
@@ -22,17 +22,37 @@ const ContactForm = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const sendEmail = async (data: FormData) => {
+    const response = await fetch('https://api.sendgrid.com/v3/mail/send', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${SENDGRID_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        personalizations: [{
+          to: [{ email: 'support@dreamzprint.com' }]
+        }],
+        from: { email: 'no-reply@dreamzprint.com' },
+        subject: `Contact Form: ${data.subject}`,
+        content: [{
+          type: 'text/plain',
+          value: `Name: ${data.name}\nEmail: ${data.email}\nMessage: ${data.message}`
+        }]
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to send email');
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
     try {
-      const { error } = await supabase.functions.invoke('send-contact-email', {
-        body: formData
-      });
-
-      if (error) throw error;
-
+      await sendEmail(formData);
       toast.success("Message sent successfully! We'll get back to you soon.");
       setFormData({ name: "", email: "", subject: "", message: "" });
       
@@ -49,7 +69,11 @@ const ContactForm = () => {
       <form 
         onSubmit={handleSubmit} 
         className="space-y-6"
+        data-netlify="true"
+        name="contact"
+        method="POST"
       >
+        <input type="hidden" name="form-name" value="contact" />
         <div>
           <label htmlFor="name" className="block text-sm font-medium mb-2">
             Name

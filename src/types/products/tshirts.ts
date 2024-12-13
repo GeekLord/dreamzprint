@@ -6,8 +6,15 @@ export const tshirtProducts: Product[] = [
     category: "T-Shirts",
     description: "100% cotton, comfortable fit",
     price: "$24.99",
-    image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80",
-    colors: ["#FFFFFF", "#000000", "#8E9196", "#D6BCFA", "#FDE1D3"],
+    image: "/lovable-uploads/00974465-20cb-4a67-9828-5d2b0e7c5b9e.png", // White t-shirt
+    colors: ["#FFFFFF", "#000000", "#8E9196", "#FDE1D3", "#D6BCFA"],
+    colorImages: {
+      "#FFFFFF": "/lovable-uploads/00974465-20cb-4a67-9828-5d2b0e7c5b9e.png",
+      "#000000": "/lovable-uploads/36efaf01-399b-41ea-8e5b-e31527704971.png",
+      "#8E9196": "/lovable-uploads/7c8ef813-3332-45d1-a2b9-89721e9deb2a.png",
+      "#FDE1D3": "/lovable-uploads/4f105905-963e-42e9-8931-98762b8cd63b.png",
+      "#D6BCFA": "/lovable-uploads/a5fa21ac-517f-41da-87b2-0a5229a52ee4.png"
+    },
     overlayPosition: {
       top: "25%",
       left: "25%",

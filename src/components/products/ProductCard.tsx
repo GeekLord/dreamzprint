@@ -10,6 +10,7 @@ interface ProductCardProps {
 
 export const ProductCard = ({ product, selectedDesign, onOrder }: ProductCardProps) => {
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0]);
+  const currentImage = product.colorImages?.[selectedColor] || product.image;
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 transition-transform hover:scale-105">
@@ -35,7 +36,7 @@ export const ProductCard = ({ product, selectedDesign, onOrder }: ProductCardPro
       
       <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-100 mb-4">
         <img 
-          src={product.image} 
+          src={currentImage} 
           alt={product.title}
           className="w-full h-full object-cover"
         />

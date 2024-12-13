@@ -5,6 +5,9 @@ export interface Product {
   price: string;
   image: string;
   colors?: string[];
+  colorImages?: {
+    [key: string]: string;
+  };
   overlayPosition: {
     top: string;
     left: string;

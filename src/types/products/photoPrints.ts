@@ -6,7 +6,7 @@ export const photoBookProducts: Product[] = [
     category: "Photo Print",
     description: "High-quality photo prints on premium paper",
     price: "$39.99",
-    image: "https://images.unsplash.com/photo-1473091534298-04dcbce3278c?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/b1fdd896-4ef6-4d6a-81b4-771cf2c1307f.png",
     overlayPosition: {
       top: "5%",
       left: "5%",
@@ -18,7 +18,7 @@ export const photoBookProducts: Product[] = [
     category: "Photo Print",
     description: "Beautiful photo prints on standard paper",
     price: "$29.99",
-    image: "https://images.unsplash.com/photo-1473091534298-04dcbce3278c?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/b1fdd896-4ef6-4d6a-81b4-771cf2c1307f.png",
     overlayPosition: {
       top: "5%",
       left: "5%",

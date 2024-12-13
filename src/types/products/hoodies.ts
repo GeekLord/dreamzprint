@@ -25,8 +25,15 @@ export const hoodieProducts: Product[] = [
     category: "Hoodies",
     description: "Classic pullover design with kangaroo pocket",
     price: "$44.99",
-    image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80",
-    colors: ["#1A1F2C", "#7E69AB", "#6E59A5", "#D6BCFA"],
+    image: "/lovable-uploads/4a8eba42-e623-4f30-9f7a-36dd22a9cf0e.png", // White default
+    colors: ["#FFFFFF", "#A8D8E6", "#FFB6C1", "#FFF4BD", "#E6E6FA"], // White, Light blue, pink, yellow, lavender
+    colorImages: {
+      "#FFFFFF": "/lovable-uploads/4a8eba42-e623-4f30-9f7a-36dd22a9cf0e.png", // White
+      "#A8D8E6": "/lovable-uploads/9ff18ac5-1bf8-4baa-8cd2-e7240434bf05.png", // Light blue
+      "#FFB6C1": "/lovable-uploads/472ddce6-2108-47ce-ade5-602e5916e069.png", // Pink
+      "#FFF4BD": "/lovable-uploads/58317098-8526-4af7-a58e-d308fe7a342f.png", // Yellow
+      "#E6E6FA": "/lovable-uploads/42ca2059-40a2-4240-9c4b-e4649564c7e8.png"  // Lavender
+    },
     overlayPosition: {
       top: "25%",
       left: "32%",

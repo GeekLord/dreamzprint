@@ -4,7 +4,7 @@ const products = [
   {
     id: 1,
     name: "Custom T-Shirts",
-    image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/dc2f0fbc-fc84-4794-a96b-5955c6856d1d.png",
     price: "From $24.99",
     description: "Create your own unique t-shirt designs"
   },

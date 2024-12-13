@@ -101,7 +101,14 @@ const Contact = () => {
             </div>
 
             <div className="bg-white p-8 rounded-lg shadow-lg">
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form 
+  name="contact"
+  method="POST"
+  data-netlify="true"
+  onSubmit={handleSubmit} 
+  className="space-y-6"
+>
+  <input type="hidden" name="form-name" value="contact" />
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium mb-2">
                     Name

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
-    <div className="relative overflow-hidden bg-gradient-to-br from-[#8B5CF6] via-[#D946EF] to-[#F97316] animate-gradient-x pt-20">
+    <div className="relative overflow-hidden bg-gradient-to-br from-[#9b87f5] via-[#E5DEFF] to-[#FDE1D3] animate-gradient-x pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <div className="text-center relative z-10">
           <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
@@ -34,12 +34,12 @@ const Hero = () => {
         </div>
       </div>
       
-      {/* Animated background elements with more vibrant colors */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-96 h-96">
-        <div className="absolute w-full h-full bg-[#D946EF]/60 rounded-full filter blur-3xl animate-float" />
+      {/* Animated background elements */}
+      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-64 h-64">
+        <div className="absolute w-full h-full bg-[#D946EF]/20 rounded-full filter blur-3xl animate-float" />
       </div>
-      <div className="absolute top-3/4 right-1/4 translate-x-1/2 translate-y-1/2 w-96 h-96">
-        <div className="absolute w-full h-full bg-[#F97316]/60 rounded-full filter blur-3xl animate-float" />
+      <div className="absolute top-3/4 right-1/4 translate-x-1/2 translate-y-1/2 w-64 h-64">
+        <div className="absolute w-full h-full bg-[#0EA5E9]/20 rounded-full filter blur-3xl animate-float" />
       </div>
     </div>
   );

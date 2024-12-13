@@ -73,11 +73,11 @@ export default {
         },
         "gradient-x": {
           "0%, 100%": {
-            "background-size": "600% 600%",
+            "background-size": "200% 200%",
             "background-position": "left center",
           },
           "50%": {
-            "background-size": "600% 600%",
+            "background-size": "200% 200%",
             "background-position": "right center",
           },
         },
@@ -86,7 +86,7 @@ export default {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         float: "float 6s ease-in-out infinite",
-        "gradient-x": "gradient-x 5s ease infinite",
+        "gradient-x": "gradient-x 15s ease infinite",
       },
     },
   },

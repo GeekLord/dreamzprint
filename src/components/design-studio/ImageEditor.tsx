@@ -4,6 +4,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { removeImageBackground } from "./image-utils/backgroundRemoval";
 import { loadImage, getFileExtensionFromUrl, sanitizePrompt } from "./image-utils/imageHelpers";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface ImageEditorProps {
   imageUrl: string;
@@ -56,33 +57,50 @@ const ImageEditor = ({ imageUrl, onImageUpdate }: ImageEditorProps) => {
   };
 
   return (
-    <div className="flex gap-2 mt-4">
-      <Button
-        onClick={removeBackground}
-        disabled={isProcessing}
-        variant="outline"
-      >
-        {isProcessing ? (
-          <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Processing...
-          </>
-        ) : (
-          <>
-            <Eraser className="mr-2 h-4 w-4" />
-            Remove Background
-          </>
-        )}
-      </Button>
-      <Button
-        onClick={handleDownload}
-        disabled={isProcessing}
-        variant="outline"
-      >
-        <Download className="mr-2 h-4 w-4" />
-        Download
-      </Button>
-    </div>
+    <TooltipProvider>
+      <div className="flex gap-2 mt-4">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              onClick={removeBackground}
+              disabled={isProcessing}
+              variant="outline"
+            >
+              {isProcessing ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <Eraser className="mr-2 h-4 w-4" />
+                  Remove Background
+                </>
+              )}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            Automatically remove the background from your design, perfect for t-shirts and merchandise
+          </TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              onClick={handleDownload}
+              disabled={isProcessing}
+              variant="outline"
+            >
+              <Download className="mr-2 h-4 w-4" />
+              Download
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            Download your design in high quality for personal use
+          </TooltipContent>
+        </Tooltip>
+      </div>
+    </TooltipProvider>
   );
 };
 

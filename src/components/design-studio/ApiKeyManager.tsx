@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Key } from "lucide-react";
 import { toast } from "sonner";
 import { createClient } from '@supabase/supabase-js';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface ApiKeyManagerProps {
   onApiKeyUpdate: () => void;
@@ -46,14 +47,23 @@ const ApiKeyManager = ({ onApiKeyUpdate, disabled }: ApiKeyManagerProps) => {
   };
 
   return (
-    <Button
-      variant="outline"
-      onClick={handleResetApiKey}
-      disabled={disabled}
-      title="Update API Key"
-    >
-      <Key className="h-4 w-4" />
-    </Button>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="outline"
+            onClick={handleResetApiKey}
+            disabled={disabled}
+            title="Update API Key"
+          >
+            <Key className="h-4 w-4" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          Refresh your API key to ensure uninterrupted access to the design generation service
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
 

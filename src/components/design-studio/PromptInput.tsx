@@ -5,6 +5,7 @@ import { Sparkles, Upload, X } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { GEMINI_API_KEY } from "@/services/api-keys";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface PromptInputProps {
   prompt: string;
@@ -119,95 +120,132 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="bg-muted/50 rounded-lg p-4 mb-4 text-sm">
-        <p className="text-muted-foreground">
-          💡 <span className="font-medium">Pro tips:</span>
-        </p>
-        <ul className="list-disc list-inside mt-2 space-y-1">
-          <li>For better results, first describe your design idea, then click "AI Idea Optimizer" to enhance your prompt.</li>
-          <li>Upload an inspiration image to guide the AI in creating designs that match your vision. The AI will use it as a reference for style, colors, and composition.</li>
-        </ul>
-      </div>
-      <label className="block text-sm font-medium mb-2">
-        Design Description
-      </label>
-      <div className="flex gap-2 mb-2">
-        <Select value={productType} onValueChange={setProductType}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select product type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="t-shirt">T-Shirt</SelectItem>
-            <SelectItem value="hoodie">Hoodie</SelectItem>
-            <SelectItem value="sweatshirt">Sweatshirt</SelectItem>
-            <SelectItem value="phone case">Phone Case</SelectItem>
-            <SelectItem value="wall art">Wall Art</SelectItem>
-            <SelectItem value="photo print">Photo Print</SelectItem>
-            <SelectItem value="canvas print">Canvas Print</SelectItem>
-            <SelectItem value="tote bag">Tote Bag</SelectItem>
-          </SelectContent>
-        </Select>
-        <Button
-          variant="secondary"
-          onClick={generateProductPrompt}
-          disabled={isGeneratingPrompt || !prompt.trim()}
-          className="flex-shrink-0"
-        >
-          <Sparkles className={`h-4 w-4 mr-2 ${isGeneratingPrompt ? 'animate-pulse' : ''}`} />
-          AI Idea Optimizer
-        </Button>
-      </div>
-      <Textarea
-        placeholder="Describe your design idea..."
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-        className="min-h-[100px]"
-      />
-      <div className="space-y-2">
-        <label className="block text-sm font-medium">
-          Upload Inspiration Image (Optional)
-        </label>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            className="relative"
-            onClick={() => document.getElementById('inspiration-image')?.click()}
-          >
-            <Upload className="h-4 w-4 mr-2" />
-            Choose Image
-            <input
-              type="file"
-              id="inspiration-image"
-              accept="image/jpeg,image/png,image/webp"
-              onChange={handleFileUpload}
-              className="hidden"
-            />
-          </Button>
-          <span className="text-sm text-muted-foreground">
-            Max size: 5MB (JPEG, PNG, WEBP)
-          </span>
+    <TooltipProvider>
+      <div className="space-y-4">
+        <div className="bg-muted/50 rounded-lg p-4 mb-4 text-sm">
+          <p className="text-muted-foreground">
+            💡 <span className="font-medium">Pro tips:</span>
+          </p>
+          <ul className="list-disc list-inside mt-2 space-y-1">
+            <li>For better results, first describe your design idea, then click "AI Idea Optimizer" to enhance your prompt.</li>
+            <li>Upload an inspiration image to guide the AI in creating designs that match your vision. The AI will use it as a reference for style, colors, and composition.</li>
+          </ul>
         </div>
+        <label className="block text-sm font-medium mb-2">
+          Design Description
+        </label>
+        <div className="flex gap-2 mb-2">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex-grow">
+                <Select value={productType} onValueChange={setProductType}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select product type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="t-shirt">T-Shirt</SelectItem>
+                    <SelectItem value="hoodie">Hoodie</SelectItem>
+                    <SelectItem value="sweatshirt">Sweatshirt</SelectItem>
+                    <SelectItem value="phone case">Phone Case</SelectItem>
+                    <SelectItem value="wall art">Wall Art</SelectItem>
+                    <SelectItem value="photo print">Photo Print</SelectItem>
+                    <SelectItem value="canvas print">Canvas Print</SelectItem>
+                    <SelectItem value="tote bag">Tote Bag</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              Select the type of product you want to create a design for. This helps optimize the AI generation.
+            </TooltipContent>
+          </Tooltip>
+          
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="secondary"
+                onClick={generateProductPrompt}
+                disabled={isGeneratingPrompt || !prompt.trim()}
+                className="flex-shrink-0"
+              >
+                <Sparkles className={`h-4 w-4 mr-2 ${isGeneratingPrompt ? 'animate-pulse' : ''}`} />
+                AI Idea Optimizer
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              Automatically enhance your prompt to create better designs for your selected product type
+            </TooltipContent>
+          </Tooltip>
+        </div>
+        
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div>
+              <Textarea
+                placeholder="Describe your design idea..."
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                className="min-h-[100px]"
+              />
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            Describe what you want in your design. Be specific about colors, style, and elements you want to include.
+          </TooltipContent>
+        </Tooltip>
 
-        {previewUrl && (
-          <div className="relative w-32 h-32">
-            <img
-              src={previewUrl}
-              alt="Inspiration"
-              className="w-full h-full object-cover rounded-lg"
-            />
-            <Button
-              variant="destructive"
-              size="icon"
-              className="absolute -top-2 -right-2 h-6 w-6"
-              onClick={removeImage}
-            >
-              <X className="h-4 w-4" />
-            </Button>
+        <div className="space-y-2">
+          <label className="block text-sm font-medium">
+            Upload Inspiration Image (Optional)
+          </label>
+          <div className="flex items-center gap-2">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="relative"
+                  onClick={() => document.getElementById('inspiration-image')?.click()}
+                >
+                  <Upload className="h-4 w-4 mr-2" />
+                  Choose Image
+                  <input
+                    type="file"
+                    id="inspiration-image"
+                    accept="image/jpeg,image/png,image/webp"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                  />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                Upload an image to inspire the AI. The generated design will incorporate elements from your reference image.
+              </TooltipContent>
+            </Tooltip>
+            <span className="text-sm text-muted-foreground">
+              Max size: 5MB (JPEG, PNG, WEBP)
+            </span>
           </div>
-        )}
+
+          {previewUrl && (
+            <div className="relative w-32 h-32">
+              <img
+                src={previewUrl}
+                alt="Inspiration"
+                className="w-full h-full object-cover rounded-lg"
+              />
+              <Button
+                variant="destructive"
+                size="icon"
+                className="absolute -top-2 -right-2 h-6 w-6"
+                onClick={removeImage}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </TooltipProvider>
   );
 };
 

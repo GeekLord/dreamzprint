@@ -19,7 +19,7 @@ export const phoneCaseProducts: Product[] = [
     category: "Phone Cases",
     description: "Slim fit with maximum protection",
     price: "$19.99",
-    image: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/516fade3-9851-4f39-abae-e7b5408baa7c.png",
     colors: ["#000000", "#FFFFFF", "#FFD700", "#FF4500", "#4682B4"],
     overlayPosition: {
       top: "15%",

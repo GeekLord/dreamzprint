@@ -39,7 +39,7 @@ const products = [
   {
     id: 6,
     name: "Canvas Prints",
-    image: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/2fee0ab4-28bb-4210-84fc-707196506dba.png",
     price: "From $49.99",
     description: "Gallery-quality canvas prints"
   },

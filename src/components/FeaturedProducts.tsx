@@ -18,7 +18,7 @@ const products = [
   {
     id: 3,
     name: "Photo Print",
-    image: "/lovable-uploads/665af363-6ed2-47d8-9e19-1485a5605af7.png",
+    image: "/lovable-uploads/c5bedc69-9a5e-4c2f-b8df-d41be53f78af.png",
     price: "From $39.99",
     description: "High-quality photo prints for your memories"
   },

@@ -25,7 +25,7 @@ const products = [
   {
     id: 4,
     name: "Custom Mugs",
-    image: "https://images.unsplash.com/photo-1577937927133-66ef06acdf18?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/b4b5797f-84b0-4bc6-9b1b-005e48ebb1ae.png",
     price: "From $14.99",
     description: "Start your day with personalized drinkware"
   },

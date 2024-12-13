@@ -26,8 +26,15 @@ export const tshirtProducts: Product[] = [
     category: "T-Shirts",
     description: "Soft blend fabric with modern cut",
     price: "$29.99",
-    image: "/lovable-uploads/2ecb0533-68aa-49ea-be4c-90ab318cc2fa.png",
-    colors: ["#FFFFFF", "#000000", "#F2FCE2", "#FFDEE2", "#D3E4FD"],
+    image: "/lovable-uploads/c7c9c89b-fd2a-475e-8278-eb62b0625ab8.png", // White t-shirt
+    colors: ["#FFFFFF", "#000000", "#87CEEB", "#98FB98", "#FFB6C1"],
+    colorImages: {
+      "#FFFFFF": "/lovable-uploads/c7c9c89b-fd2a-475e-8278-eb62b0625ab8.png",
+      "#000000": "/lovable-uploads/fef3a567-1af1-4874-9634-f68a20c2537e.png",
+      "#87CEEB": "/lovable-uploads/0cb33359-4516-4dce-9e6e-18c533bd2381.png",
+      "#98FB98": "/lovable-uploads/ae3d4f03-6cfe-4d70-a0fb-e6a20c085b3d.png",
+      "#FFB6C1": "/lovable-uploads/e33555ff-6a80-4c88-bc5e-a8a7f979cc42.png"
+    },
     overlayPosition: {
       top: "22%",
       left: "28%",

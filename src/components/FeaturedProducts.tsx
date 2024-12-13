@@ -77,11 +77,11 @@ const FeaturedProducts = () => {
               to="/products"
               className="group relative"
             >
-              <div className="aspect-square w-full overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 transition-opacity">
+              <div className="aspect-square w-full overflow-hidden rounded-lg bg-gray-100">
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="h-full w-full object-cover object-center"
+                  className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-110"
                 />
               </div>
               <div className="mt-4">

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 interface FormData {
   name: string;
@@ -21,65 +22,16 @@ const ContactForm = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const sendEmail = async (data: FormData) => {
-    const response = await fetch("https://api.sendgrid.com/v3/mail/send", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${atob(import.meta.env.VITE_SENDGRID_API_KEY)}`,
-      },
-      body: JSON.stringify({
-        personalizations: [
-          {
-            to: [{ email: "cyber.mitra@gmail.com" }],
-          },
-        ],
-        from: { email: "contact@dreamzprint.com" },
-        subject: `Contact Form: ${data.subject}`,
-        content: [
-          {
-            type: "text/plain",
-            value: `
-              New Contact Form Submission
-              
-              From: ${data.name} (${data.email})
-              Subject: ${data.subject}
-              
-              Message:
-              ${data.message}
-            `,
-          },
-        ],
-        reply_to: { email: data.email, name: data.name },
-      }),
-    });
-
-    if (!response.ok) {
-      const error = await response.text();
-      console.error("SendGrid API error:", error);
-      throw new Error("Failed to send email");
-    }
-
-    return response;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
     try {
-      // Handle Netlify form submission
-      const form = e.target as HTMLFormElement;
-      const formData = new FormData(form);
-      
-      await fetch("/", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(formData as any).toString(),
+      const { error } = await supabase.functions.invoke('send-contact-email', {
+        body: formData
       });
 
-      // Send email via SendGrid
-      await sendEmail(formData as unknown as FormData);
+      if (error) throw error;
 
       toast.success("Message sent successfully! We'll get back to you soon.");
       setFormData({ name: "", email: "", subject: "", message: "" });
@@ -95,13 +47,9 @@ const ContactForm = () => {
   return (
     <div className="bg-white p-8 rounded-lg shadow-lg">
       <form 
-        name="contact"
-        method="POST"
-        data-netlify="true"
         onSubmit={handleSubmit} 
         className="space-y-6"
       >
-        <input type="hidden" name="form-name" value="contact" />
         <div>
           <label htmlFor="name" className="block text-sm font-medium mb-2">
             Name

@@ -6,7 +6,7 @@ export const wallArtProducts: Product[] = [
     category: "Wall Art",
     description: "Stunning abstract feather artwork with vibrant colors - perfect for modern interiors",
     price: "$299.99",
-    image: "/lovable-uploads/6138f197-d611-4c41-8ce5-a621360dfaa7.png",
+    image: "/lovable-uploads/bd1af65a-6111-47a5-80f2-3441316bfdf4.png",
     overlayPosition: {
       top: "10%",
       left: "10%",

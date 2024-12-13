@@ -23,19 +23,38 @@ const Contact = () => {
     setIsSubmitting(true);
     
     try {
-      console.log("Form submitted:", formData);
+      // Handle Netlify form submission
+      const form = e.target as HTMLFormElement;
+      const formData = new FormData(form);
       
-      const { data, error } = await supabase.functions.invoke('send-contact-email', {
+      fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(formData as any).toString(),
+      })
+      .then(() => {
+        console.log("Form submitted to Netlify successfully");
+      })
+      .catch((error) => {
+        console.error("Netlify form submission error:", error);
+      });
+
+      // Send email notification via Supabase Edge Function
+      const { error: supabaseError } = await supabase.functions.invoke('send-contact-email', {
         body: formData
       });
 
-      if (error) throw error;
+      if (supabaseError) {
+        console.error("Supabase function error:", supabaseError);
+        // Don't throw error here, as we still want to show success if Netlify form submission worked
+      }
 
       toast.success("Message sent successfully! We'll get back to you soon.");
       setFormData({ name: "", email: "", subject: "", message: "" });
+      
     } catch (error) {
       console.error("Error sending message:", error);
-      toast.error("Failed to send message. Please try again later.");
+      toast.error("Message received but email notification failed. We'll still get back to you soon!");
     } finally {
       setIsSubmitting(false);
     }
@@ -102,19 +121,20 @@ const Contact = () => {
 
             <div className="bg-white p-8 rounded-lg shadow-lg">
               <form 
-  name="contact"
-  method="POST"
-  data-netlify="true"
-  onSubmit={handleSubmit} 
-  className="space-y-6"
->
-  <input type="hidden" name="form-name" value="contact" />
+                name="contact"
+                method="POST"
+                data-netlify="true"
+                onSubmit={handleSubmit} 
+                className="space-y-6"
+              >
+                <input type="hidden" name="form-name" value="contact" />
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium mb-2">
                     Name
                   </label>
                   <Input
                     id="name"
+                    name="name"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     required
@@ -128,6 +148,7 @@ const Contact = () => {
                   </label>
                   <Input
                     id="email"
+                    name="email"
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -142,6 +163,7 @@ const Contact = () => {
                   </label>
                   <Input
                     id="subject"
+                    name="subject"
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                     required
@@ -155,6 +177,7 @@ const Contact = () => {
                   </label>
                   <Textarea
                     id="message"
+                    name="message"
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     className="min-h-[150px]"

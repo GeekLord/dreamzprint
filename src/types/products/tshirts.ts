@@ -62,7 +62,7 @@ export const tshirtProducts: Product[] = [
     }
   },
   {
-    title: "Long Sleeve T-Shirt",
+    title: "Premium Long Sleeve T-Shirt",
     category: "T-Shirts",
     description: "Perfect for layering or cooler days",
     price: "$32.99",

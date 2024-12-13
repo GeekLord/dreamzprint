@@ -53,7 +53,7 @@ const products = [
   {
     id: 8,
     name: "Tote Bags",
-    image: "/lovable-uploads/823ad244-bbd5-4d5c-9ccc-78deda4feaa7.png",
+    image: "/lovable-uploads/2f09b0d0-5202-48df-8a6f-0866a7dd2cb7.png",
     price: "From $16.99",
     description: "Eco-friendly custom tote bags"
   }

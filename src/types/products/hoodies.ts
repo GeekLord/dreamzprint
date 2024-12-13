@@ -6,13 +6,13 @@ export const hoodieProducts: Product[] = [
     category: "Hoodies",
     description: "Warm and stylish zip-up hoodie",
     price: "$49.99",
-    image: "/lovable-uploads/9e2a03a8-dd28-4168-b022-4aee9cc7ee2b.png", // Light blue default
-    colors: ["#A8D8E6", "#FFB6C1", "#FFF4BD", "#FFFFFF"], // Light blue, pink, yellow, white
+    image: "/lovable-uploads/1d23c48c-2fb5-4df1-a1d4-aabf1a5b5e9e.png", // White default
+    colors: ["#FFFFFF", "#A8D8E6", "#FFB6C1", "#FFF4BD"], // White, Light blue, pink, yellow
     colorImages: {
+      "#FFFFFF": "/lovable-uploads/1d23c48c-2fb5-4df1-a1d4-aabf1a5b5e9e.png",  // White
       "#A8D8E6": "/lovable-uploads/9e2a03a8-dd28-4168-b022-4aee9cc7ee2b.png", // Light blue
       "#FFB6C1": "/lovable-uploads/35bc51df-aa49-4421-b993-443c87a34898.png", // Pink
-      "#FFF4BD": "/lovable-uploads/6197d84b-79b8-4c2d-b2e6-224c217af8f4.png", // Yellow
-      "#FFFFFF": "/lovable-uploads/1d23c48c-2fb5-4df1-a1d4-aabf1a5b5e9e.png"  // White
+      "#FFF4BD": "/lovable-uploads/6197d84b-79b8-4c2d-b2e6-224c217af8f4.png" // Yellow
     },
     overlayPosition: {
       top: "30%",

@@ -2,7 +2,7 @@ import type { Product } from '../productTypes';
 
 export const wallArtProducts: Product[] = [
   {
-    title: "Vibrant Feather Canvas",
+    title: "Wall Art Sticker",
     category: "Wall Art",
     description: "Stunning abstract feather artwork with vibrant colors - perfect for modern interiors",
     price: "$299.99",

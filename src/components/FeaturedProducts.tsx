@@ -32,7 +32,7 @@ const products = [
   {
     id: 5,
     name: "Phone Cases",
-    image: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/a1c80e3a-0452-42df-8e42-69551c603d94.png",
     price: "From $19.99",
     description: "Protect your device with style"
   },

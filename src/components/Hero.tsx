@@ -35,11 +35,11 @@ const Hero = () => {
       </div>
       
       {/* Animated background elements with more vibrant colors */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-64 h-64">
-        <div className="absolute w-full h-full bg-[#D946EF]/40 rounded-full filter blur-3xl animate-float" />
+      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-96 h-96">
+        <div className="absolute w-full h-full bg-[#D946EF]/60 rounded-full filter blur-3xl animate-float" />
       </div>
-      <div className="absolute top-3/4 right-1/4 translate-x-1/2 translate-y-1/2 w-64 h-64">
-        <div className="absolute w-full h-full bg-[#F97316]/40 rounded-full filter blur-3xl animate-float" />
+      <div className="absolute top-3/4 right-1/4 translate-x-1/2 translate-y-1/2 w-96 h-96">
+        <div className="absolute w-full h-full bg-[#F97316]/60 rounded-full filter blur-3xl animate-float" />
       </div>
     </div>
   );

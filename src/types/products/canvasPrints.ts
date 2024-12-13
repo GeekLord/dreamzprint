@@ -6,7 +6,7 @@ export const canvasPrintProducts: Product[] = [
     category: "Canvas Prints",
     description: "Statement piece for any room",
     price: "$79.99",
-    image: "https://images.unsplash.com/photo-1513519245088-0e12902e35a6?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/8d022bbf-7c7b-481e-a4c9-ac8bc66d92f6.png",
     overlayPosition: {
       top: "10%",
       left: "10%",
@@ -18,7 +18,7 @@ export const canvasPrintProducts: Product[] = [
     category: "Canvas Prints",
     description: "Three-piece canvas artwork",
     price: "$129.99",
-    image: "https://images.unsplash.com/photo-1513519245088-0e12902e35a6?auto=format&fit=crop&q=80",
+    image: "/lovable-uploads/8d022bbf-7c7b-481e-a4c9-ac8bc66d92f6.png",
     overlayPosition: {
       top: "10%",
       left: "10%",

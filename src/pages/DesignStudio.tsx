@@ -49,7 +49,7 @@ const DesignStudio = () => {
     <div className="min-h-screen">
       <Navigation />
       <main className="container mx-auto px-4 pt-24 pb-12">
-        <h1 className="text-4xl font-bold mb-8 bg-gradient-to-r from-[#9b87f5] via-[#D946EF] to-[#F97316] text-transparent bg-clip-text">
+        <h1 className="text-4xl font-bold mb-8 bg-gradient-to-r from-[#9b87f5] via-[#D946EF] to-[#F97316] text-transparent bg-clip-text animate-float">
           Dreamz Print : Design Studio
         </h1>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

@@ -5,22 +5,26 @@ const Features = () => {
     {
       icon: <Paintbrush className="h-6 w-6" />,
       title: "AI-Powered Design",
-      description: "Create unique designs with our intelligent design assistant"
+      description: "Create unique designs with our intelligent design assistant",
+      gradientColors: "from-[#9b87f5] to-[#6E59A5]"
     },
     {
       icon: <Zap className="h-6 w-6" />,
       title: "Instant Preview",
-      description: "See your designs come to life in real-time on our products"
+      description: "See your designs come to life in real-time on our products",
+      gradientColors: "from-[#F97316] to-[#EA580C]"
     },
     {
       icon: <Shield className="h-6 w-6" />,
       title: "Quality Guaranteed",
-      description: "Premium materials and expert printing for lasting quality"
+      description: "Premium materials and expert printing for lasting quality",
+      gradientColors: "from-[#0EA5E9] to-[#0369A1]"
     },
     {
       icon: <Truck className="h-6 w-6" />,
       title: "Fast Delivery",
-      description: "Quick processing and reliable shipping worldwide"
+      description: "Quick processing and reliable shipping worldwide",
+      gradientColors: "from-[#D946EF] to-[#A21CAF]"
     }
   ];
 
@@ -42,7 +46,7 @@ const Features = () => {
               key={index}
               className="relative group bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
             >
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-[#9b87f5] to-[#6E59A5] rounded-xl opacity-0 group-hover:opacity-100 transition duration-300 blur-lg" />
+              <div className={`absolute -inset-0.5 bg-gradient-to-r ${feature.gradientColors} rounded-xl opacity-0 group-hover:opacity-100 transition duration-300 blur-lg`} />
               <div className="relative bg-white p-6 rounded-xl">
                 <div className="w-12 h-12 bg-[#F1F0FB] rounded-lg flex items-center justify-center text-[#6E59A5] mb-4">
                   {feature.icon}

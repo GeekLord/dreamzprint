@@ -12,7 +12,7 @@ const Features = () => {
       icon: <Zap className="h-6 w-6" />,
       title: "Instant Preview",
       description: "See your designs come to life in real-time on our products",
-      gradientColors: "from-[#F97316] to-[#EA580C]"
+      gradientColors: "from-[#98FB98] to-[#98FB98]"
     },
     {
       icon: <Shield className="h-6 w-6" />,

@@ -96,6 +96,28 @@ const PromptInput = ({ prompt, setPrompt, onImprove, isImprovingPrompt, productT
               Select the type of product you want to create a design for. This helps optimize the AI generation.
             </TooltipContent>
           </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                onClick={onImprove}
+                disabled={isImprovingPrompt || !prompt.trim()}
+              >
+                {isImprovingPrompt ? (
+                  <>Optimizing...</>
+                ) : (
+                  <>
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    AI Idea Optimizer
+                  </>
+                )}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              Click to optimize your prompt for better results
+            </TooltipContent>
+          </Tooltip>
         </div>
         
         <Tooltip>
@@ -113,22 +135,6 @@ const PromptInput = ({ prompt, setPrompt, onImprove, isImprovingPrompt, productT
             Describe what you want in your design. Be specific about colors, style, and elements you want to include.
           </TooltipContent>
         </Tooltip>
-
-        <Button
-          variant="outline"
-          className="w-full"
-          onClick={onImprove}
-          disabled={isImprovingPrompt || !prompt.trim()}
-        >
-          {isImprovingPrompt ? (
-            <>Optimizing...</>
-          ) : (
-            <>
-              <Sparkles className="mr-2 h-4 w-4" />
-              AI Idea Optimizer
-            </>
-          )}
-        </Button>
 
         <div className="space-y-2">
           <label className="block text-sm font-medium">

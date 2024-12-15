@@ -19,7 +19,7 @@ interface PromptInputProps {
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
-const PromptInput = ({ prompt, setPrompt, isImprovingPrompt, productType, setProductType }: PromptInputProps) => {
+const PromptInput = ({ prompt, setPrompt, onImprove, isImprovingPrompt, productType, setProductType }: PromptInputProps) => {
   const [inspirationImage, setInspirationImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -64,7 +64,8 @@ const PromptInput = ({ prompt, setPrompt, isImprovingPrompt, productType, setPro
           </p>
           <ul className="list-disc list-inside mt-2 space-y-1">
             <li>For better results, first describe your design idea, then click "AI Idea Optimizer" to enhance your prompt.</li>
-            <li>Upload an inspiration image to guide the AI in creating designs that match your vision. The AI will use it as a reference for style, colors, and composition.</li>
+            <li>For T-Shirts, Hoodies, Sweatshirts, and Tote Bags, your prompt will be automatically optimized before generation.</li>
+            <li>Upload an inspiration image to guide the AI in creating designs that match your vision.</li>
           </ul>
         </div>
         <label className="block text-sm font-medium mb-2">
@@ -112,6 +113,22 @@ const PromptInput = ({ prompt, setPrompt, isImprovingPrompt, productType, setPro
             Describe what you want in your design. Be specific about colors, style, and elements you want to include.
           </TooltipContent>
         </Tooltip>
+
+        <Button
+          variant="outline"
+          className="w-full"
+          onClick={onImprove}
+          disabled={isImprovingPrompt || !prompt.trim()}
+        >
+          {isImprovingPrompt ? (
+            <>Optimizing...</>
+          ) : (
+            <>
+              <Sparkles className="mr-2 h-4 w-4" />
+              AI Idea Optimizer
+            </>
+          )}
+        </Button>
 
         <div className="space-y-2">
           <label className="block text-sm font-medium">

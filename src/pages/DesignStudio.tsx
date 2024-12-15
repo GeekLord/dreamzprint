@@ -66,6 +66,25 @@ const DesignStudio = () => {
     }
   };
 
+  const handleImprovePrompt = async () => {
+    if (!prompt.trim()) {
+      toast.error("Please enter a design description first");
+      return;
+    }
+
+    setIsImprovingPrompt(true);
+    try {
+      const improvedPrompt = await generateProductPrompt(prompt, productType);
+      setPrompt(improvedPrompt);
+      toast.success("Prompt optimized successfully!");
+    } catch (error) {
+      console.error("Error improving prompt:", error);
+      toast.error("Failed to optimize prompt. Please try again.");
+    } finally {
+      setIsImprovingPrompt(false);
+    }
+  };
+
   const handleGenerate = async () => {
     if (!prompt.trim()) {
       toast.error("Please enter a design description");
@@ -127,7 +146,7 @@ const DesignStudio = () => {
               <PromptInput
                 prompt={prompt}
                 setPrompt={setPrompt}
-                onImprove={() => {}}
+                onImprove={handleImprovePrompt}
                 isImprovingPrompt={isImprovingPrompt}
                 productType={productType}
                 setProductType={setProductType}

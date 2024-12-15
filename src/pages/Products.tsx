@@ -18,9 +18,22 @@ const Products = () => {
 
   useEffect(() => {
     const design = localStorage.getItem('selectedDesign');
+    const productType = localStorage.getItem('selectedProductType');
+    
     if (design) {
       setSelectedDesign(design);
       toast.success("Your custom design has been loaded!");
+      
+      // Scroll to the selected product category if it exists
+      if (productType) {
+        setTimeout(() => {
+          const element = document.getElementById(productType);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+          localStorage.removeItem('selectedProductType'); // Clean up
+        }, 100);
+      }
     }
   }, []);
 
@@ -60,7 +73,7 @@ const Products = () => {
         
         <div className="space-y-16">
           {products.map((category, index) => (
-            <div key={index} className="space-y-8">
+            <div key={index} className="space-y-8" id={category.category}>
               <h2 className="text-2xl font-semibold text-gray-900">{category.category}</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {category.items.map((product, productIndex) => (

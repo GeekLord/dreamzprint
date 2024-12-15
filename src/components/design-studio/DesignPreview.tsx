@@ -6,20 +6,21 @@ import ImageEditor from "./ImageEditor";
 interface DesignPreviewProps {
   imageUrl: string | null;
   isLoading: boolean;
+  selectedProduct: string;
 }
 
-const DesignPreview = ({ imageUrl, isLoading }: DesignPreviewProps) => {
+const DesignPreview = ({ imageUrl, isLoading, selectedProduct }: DesignPreviewProps) => {
   const navigate = useNavigate();
 
   const handleOrder = () => {
     if (imageUrl) {
       localStorage.setItem('selectedDesign', imageUrl);
+      localStorage.setItem('selectedProductType', selectedProduct);
       navigate('/products');
     }
   };
 
   const handleImageUpdate = (newImageUrl: string) => {
-    // Store the updated image URL in localStorage
     localStorage.setItem('selectedDesign', newImageUrl);
   };
 

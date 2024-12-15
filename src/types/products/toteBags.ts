@@ -9,9 +9,9 @@ export const toteBagProducts: Product[] = [
     image: "/lovable-uploads/aa7caeac-bce2-4c34-abd6-12ef304f2a86.png",
     colors: ["#FFFFFF", "#000000", "#C0C0C0", "#8B4513"],
     overlayPosition: {
-      top: "20%",
-      left: "20%",
-      width: "60%"
+      top: "25%",
+      left: "25%",
+      width: "50%"
     }
   },
   {

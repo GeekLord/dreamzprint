@@ -6,7 +6,7 @@ export const tshirtProducts: Product[] = [
     category: "T-Shirts",
     description: "100% cotton, comfortable fit",
     price: "$24.99",
-    image: "/lovable-uploads/00974465-20cb-4a67-9828-5d2b0e7c5b9e.png", // White t-shirt
+    image: "/lovable-uploads/00974465-20cb-4a67-9828-5d2b0e7c5b9e.png",
     colors: ["#FFFFFF", "#000000", "#8E9196", "#FDE1D3", "#D6BCFA"],
     colorImages: {
       "#FFFFFF": "/lovable-uploads/00974465-20cb-4a67-9828-5d2b0e7c5b9e.png",
@@ -16,9 +16,9 @@ export const tshirtProducts: Product[] = [
       "#D6BCFA": "/lovable-uploads/a5fa21ac-517f-41da-87b2-0a5229a52ee4.png"
     },
     overlayPosition: {
-      top: "25%",
-      left: "25%",
-      width: "50%"
+      top: "28%",
+      left: "32%",
+      width: "36%"
     }
   },
   {

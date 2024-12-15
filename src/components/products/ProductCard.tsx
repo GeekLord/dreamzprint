@@ -47,6 +47,9 @@ export const ProductCard = ({ product, selectedDesign, onOrder }: ProductCardPro
               top: product.overlayPosition.top,
               left: product.overlayPosition.left,
               width: product.overlayPosition.width,
+              height: "auto",
+              transform: "translateZ(0)",
+              backfaceVisibility: "hidden",
             }}
           >
             <img 

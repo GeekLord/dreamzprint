@@ -9,9 +9,9 @@ export const phoneCaseProducts: Product[] = [
     image: "/lovable-uploads/9f8f5b8b-5395-46d3-a4ad-d6980d4eb67c.png",
     colors: ["#000000", "#FFFFFF", "#FF69B4", "#4169E1", "#32CD32"],
     overlayPosition: {
-      top: "15%",
-      left: "10%",
-      width: "80%"
+      top: "22%",
+      left: "15%",
+      width: "70%"
     }
   },
   {
@@ -22,9 +22,9 @@ export const phoneCaseProducts: Product[] = [
     image: "/lovable-uploads/516fade3-9851-4f39-abae-e7b5408baa7c.png",
     colors: ["#000000", "#FFFFFF", "#FFD700", "#FF4500", "#4682B4"],
     overlayPosition: {
-      top: "15%",
-      left: "10%",
-      width: "80%"
+      top: "22%",
+      left: "15%",
+      width: "70%"
     }
   }
 ];

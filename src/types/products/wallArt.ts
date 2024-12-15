@@ -8,9 +8,9 @@ export const wallArtProducts: Product[] = [
     price: "$299.99",
     image: "/lovable-uploads/bd1af65a-6111-47a5-80f2-3441316bfdf4.png",
     overlayPosition: {
-      top: "10%",
-      left: "10%",
-      width: "80%"
+      top: "5%",
+      left: "5%",
+      width: "90%"
     }
   },
   {

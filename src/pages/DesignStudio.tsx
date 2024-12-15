@@ -3,6 +3,7 @@ import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
+import { Progress } from "../components/ui/progress"; 
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { RunwareService, GenerateImageParams } from "../services/runware";
@@ -16,6 +17,7 @@ const DesignStudio = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isImprovingPrompt, setIsImprovingPrompt] = useState(false);
   const [productType, setProductType] = useState("t-shirt");
+  const [progress, setProgress] = useState(0);
 
   const generateProductPrompt = async (description: string, type: string) => {
     try {
@@ -92,25 +94,33 @@ const DesignStudio = () => {
     }
 
     setIsGenerating(true);
+    setProgress(0);
+    
     try {
       let finalPrompt = prompt;
       
-      // Auto-optimize prompt for specific product types
+      // Start progress for prompt optimization
       if (['t-shirt', 'hoodie', 'sweatshirt', 'tote bag'].includes(productType.toLowerCase())) {
         try {
           setIsImprovingPrompt(true);
+          setProgress(20);
           toast.info("Optimizing prompt for better results...");
           finalPrompt = await generateProductPrompt(prompt, productType);
+          setProgress(40);
           toast.success("Prompt optimized for better results!");
         } catch (error) {
           console.error("Error optimizing prompt:", error);
           toast.error("Failed to optimize prompt, using original prompt instead");
-          finalPrompt = prompt; // Fallback to original prompt
+          finalPrompt = prompt;
         } finally {
           setIsImprovingPrompt(false);
         }
+      } else {
+        setProgress(40);
       }
 
+      // Image generation progress
+      setProgress(60);
       const runwareService = new RunwareService(RUNWARE_API_KEY);
       const params: GenerateImageParams = {
         positivePrompt: finalPrompt,
@@ -121,14 +131,18 @@ const DesignStudio = () => {
         height: 1024,
       };
 
+      setProgress(80);
       const result = await runwareService.generateImage(params);
       setGeneratedImage(result.imageURL);
+      setProgress(100);
       toast.success("Design generated successfully!");
     } catch (error) {
       console.error("Error generating image:", error);
       toast.error("Failed to generate design. Please try again.");
     } finally {
       setIsGenerating(false);
+      // Reset progress after a delay
+      setTimeout(() => setProgress(0), 1000);
     }
   };
 
@@ -151,6 +165,18 @@ const DesignStudio = () => {
                 productType={productType}
                 setProductType={setProductType}
               />
+              {isGenerating && (
+                <div className="space-y-2">
+                  <Progress value={progress} className="w-full" />
+                  <p className="text-sm text-muted-foreground text-center">
+                    {progress < 40 && "Preparing design parameters..."}
+                    {progress >= 40 && progress < 60 && "Optimizing prompt..."}
+                    {progress >= 60 && progress < 80 && "Generating design..."}
+                    {progress >= 80 && progress < 100 && "Finalizing design..."}
+                    {progress === 100 && "Design generated!"}
+                  </p>
+                </div>
+              )}
               <Button
                 onClick={handleGenerate}
                 disabled={isGenerating}

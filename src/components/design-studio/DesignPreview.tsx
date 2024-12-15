@@ -14,8 +14,10 @@ const DesignPreview = ({ imageUrl, isLoading, selectedProduct }: DesignPreviewPr
 
   const handleOrder = () => {
     if (imageUrl) {
+      // Remove spaces from the product type to match the ID format in Products page
+      const formattedProductType = selectedProduct.replace(/\s+/g, '');
       localStorage.setItem('selectedDesign', imageUrl);
-      localStorage.setItem('selectedProductType', selectedProduct);
+      localStorage.setItem('selectedProductType', formattedProductType);
       navigate('/products');
     }
   };

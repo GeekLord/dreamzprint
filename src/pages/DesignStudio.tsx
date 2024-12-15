@@ -173,6 +173,7 @@ const DesignStudio = () => {
             <DesignPreview
               imageUrl={generatedImage}
               isLoading={isGenerating}
+              selectedProduct={productType}
             />
           </Card>
         </div>

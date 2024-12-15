@@ -12,14 +12,14 @@ interface PromptInputProps {
   setPrompt: (prompt: string) => void;
   onImprove: () => void;
   isImprovingPrompt: boolean;
+  productType: string;
+  setProductType: (type: string) => void;
 }
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
-const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
-  const [productType, setProductType] = useState("t-shirt");
-  const [isGeneratingPrompt, setIsGeneratingPrompt] = useState(false);
+const PromptInput = ({ prompt, setPrompt, isImprovingPrompt, productType, setProductType }: PromptInputProps) => {
   const [inspirationImage, setInspirationImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -53,70 +53,6 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
     }
     setInspirationImage(null);
     setPreviewUrl(null);
-  };
-
-  const generateProductPrompt = async () => {
-    if (!prompt.trim()) {
-      toast.error("Please enter a design description first");
-      return;
-    }
-
-    setIsGeneratingPrompt(true);
-    try {
-      console.log("Generating product-optimized prompt for:", { description: prompt, productType });
-
-      const response = await fetch('https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-goog-api-key': GEMINI_API_KEY,
-        },
-        body: JSON.stringify({
-          contents: [{
-            parts: [{
-              text: `Create a concise, specific design prompt for a ${productType} design based on this description: "${prompt}".
-              Follow these rules strictly:
-              1. Focus only on the artistic design elements, not the ${productType} itself
-              2. Keep the prompt under 100 words
-              3. Emphasize these key aspects:
-                - High contrast and clear edges for good printing
-                - Simple, clean artwork without complex gradients
-                - Bold, distinctive visual elements
-                - Appropriate scale for ${productType} printing
-              4. Remove any references to the product itself
-              5. Format as a single, clear description without bullet points
-              6. Avoid phrases like "design of" or "featuring" - be direct
-              7. Focus on the visual elements only, no marketing or conceptual language`
-            }]
-          }]
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to generate prompt');
-      }
-
-      const data = await response.json();
-      const improvedPrompt = data.candidates[0].content.parts[0].text;
-
-      // Clean up the response by removing any line breaks and extra spaces
-      const cleanedPrompt = improvedPrompt
-        .replace(/\n/g, ' ')
-        .replace(/\s+/g, ' ')
-        .trim();
-
-      setPrompt(cleanedPrompt);
-      toast.success("Generated product-optimized prompt!");
-    } catch (error) {
-      console.error("Error generating prompt:", error);
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Failed to generate prompt. Please try again."
-      );
-    } finally {
-      setIsGeneratingPrompt(false);
-    }
   };
 
   return (
@@ -157,23 +93,6 @@ const PromptInput = ({ prompt, setPrompt }: PromptInputProps) => {
             </TooltipTrigger>
             <TooltipContent>
               Select the type of product you want to create a design for. This helps optimize the AI generation.
-            </TooltipContent>
-          </Tooltip>
-          
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="secondary"
-                onClick={generateProductPrompt}
-                disabled={isGeneratingPrompt || !prompt.trim()}
-                className="flex-shrink-0"
-              >
-                <Sparkles className={`h-4 w-4 mr-2 ${isGeneratingPrompt ? 'animate-pulse' : ''}`} />
-                AI Idea Optimizer
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              Automatically enhance your prompt to create better designs for your selected product type
             </TooltipContent>
           </Tooltip>
         </div>

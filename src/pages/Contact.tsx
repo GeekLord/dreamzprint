@@ -6,7 +6,6 @@ import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { toast } from "sonner";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -23,14 +22,8 @@ const Contact = () => {
     setIsSubmitting(true);
     
     try {
-      console.log("Form submitted:", formData);
-      
-      const { data, error } = await supabase.functions.invoke('send-contact-email', {
-        body: formData
-      });
-
-      if (error) throw error;
-
+      // The form will be handled by Netlify automatically
+      // We just need to show a success message to the user
       toast.success("Message sent successfully! We'll get back to you soon.");
       setFormData({ name: "", email: "", subject: "", message: "" });
     } catch (error) {
@@ -102,19 +95,20 @@ const Contact = () => {
 
             <div className="bg-white p-8 rounded-lg shadow-lg">
               <form 
-  name="contact"
-  method="POST"
-  data-netlify="true"
-  onSubmit={handleSubmit} 
-  className="space-y-6"
->
-  <input type="hidden" name="form-name" value="contact" />
+                name="contact"
+                method="POST"
+                data-netlify="true"
+                onSubmit={handleSubmit} 
+                className="space-y-6"
+              >
+                <input type="hidden" name="form-name" value="contact" />
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium mb-2">
                     Name
                   </label>
                   <Input
                     id="name"
+                    name="name"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     required
@@ -128,6 +122,7 @@ const Contact = () => {
                   </label>
                   <Input
                     id="email"
+                    name="email"
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -142,6 +137,7 @@ const Contact = () => {
                   </label>
                   <Input
                     id="subject"
+                    name="subject"
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                     required
@@ -155,6 +151,7 @@ const Contact = () => {
                   </label>
                   <Textarea
                     id="message"
+                    name="message"
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     className="min-h-[150px]"

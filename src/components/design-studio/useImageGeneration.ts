@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { RunwareService, GenerateImageParams } from "@/services/runware";
-import { RUNWARE_API_KEY } from "@/services/api-keys";
+import { RUNWARE_API_KEY, GEMINI_API_KEY } from "@/services/api-keys";
 
 interface UseImageGenerationProps {
   prompt: string;
@@ -128,5 +128,6 @@ export const useImageGeneration = ({ prompt, productType }: UseImageGenerationPr
     isImprovingPrompt,
     progress,
     handleGenerate,
+    generateProductPrompt,
   };
 };

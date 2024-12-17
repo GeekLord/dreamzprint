@@ -5,17 +5,19 @@ import { Card } from "../components/ui/card";
 import { useImageGeneration } from "../components/design-studio/useImageGeneration";
 import DesignPreview from "../components/design-studio/DesignPreview";
 import GenerationForm from "../components/design-studio/GenerationForm";
+import { toast } from "sonner";
 
 const DesignStudio = () => {
   const [prompt, setPrompt] = useState("");
   const [productType, setProductType] = useState("t-shirt");
+  const [isImprovingPrompt, setIsImprovingPrompt] = useState(false);
 
   const {
     generatedImage,
     isGenerating,
-    isImprovingPrompt,
     progress,
     handleGenerate,
+    generateProductPrompt,
   } = useImageGeneration({ prompt, productType });
 
   const handleImprovePrompt = async () => {

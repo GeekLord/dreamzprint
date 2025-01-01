@@ -20,6 +20,7 @@ export class RunwareService {
 
   async generateImage(params: GenerateImageParams): Promise<{ imageURL: string }> {
     try {
+      console.log('Generating image with params:', params);
       const response = await fetch(`${this.baseUrl}/v1/generate`, {
         method: 'POST',
         headers: {
@@ -30,10 +31,12 @@ export class RunwareService {
       });
 
       if (!response.ok) {
+        console.error('API request failed:', response.status, response.statusText);
         throw new Error(`API request failed with status ${response.status}`);
       }
 
       const data = await response.json();
+      console.log('Generated image response:', data);
       return { imageURL: data.imageURL };
     } catch (error) {
       console.error('Error generating image:', error);

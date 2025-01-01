@@ -52,7 +52,6 @@ export const useImageGeneration = ({ prompt, productType }: UseImageGenerationPr
       const data = await response.json();
       const improvedPrompt = data.candidates[0].content.parts[0].text;
 
-      // Clean up the response by removing any line breaks and extra spaces
       return improvedPrompt
         .replace(/\n/g, ' ')
         .replace(/\s+/g, ' ')

@@ -1,45 +1,52 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
-import { componentTagger } from "lovable-tagger";
-import type { Connect, ViteDevServer } from 'vite';
+import { Connect } from "vite";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  server: {
-    host: "::",
-    port: 8080,
-    // Add middleware to handle client-side routing
-    middlewares: [
-      (req: Connect.IncomingMessage, res: any, next: Connect.NextFunction) => {
-        // Check if the request is for a static file
-        if (req.url?.includes('.')) {
-          return next();
-        }
-        // For all other requests, serve index.html
-        req.url = '/index.html';
-        next();
-      },
-    ],
-  },
+export default defineConfig(({ command }) => ({
   plugins: [
     react(),
-    mode === 'development' &&
-    componentTagger(),
-  ].filter(Boolean),
+    {
+      name: "spa-fallback",
+      configureServer(server) {
+        server.middlewares.use((req: Connect.IncomingMessage, res: any, next: Connect.NextFunction) => {
+          if (req.url!.includes('.')) {
+            // If the URL contains a dot, assume it's a file request and let Vite handle it
+            next();
+          } else {
+            // For all other requests, redirect to index.html
+            req.url = '/index.html';
+            next();
+          }
+        });
+      },
+      configurePreviewServer(server) {
+        server.middlewares.use((req: Connect.IncomingMessage, res: any, next: Connect.NextFunction) => {
+          if (req.url!.includes('.')) {
+            next();
+          } else {
+            req.url = '/index.html';
+            next();
+          }
+        });
+      },
+    },
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  // Add base configuration for production
   base: '/',
-  // Add build configuration for SPA
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks: undefined,
-      },
-    },
+  server: {
+    port: 3000,
+    strictPort: true,
+    host: true
   },
+  preview: {
+    port: 3000,
+    strictPort: true,
+    host: true
+  }
 }));

@@ -2,7 +2,7 @@
 
 In today’s fast-paced world, personalization is key to making a statement. Whether it’s a customized t-shirt that reflects your personality, a hoodie with a bold design, or a canvas print that captures cherished memories, **DreamzPrint** is here to bring your vision to life.  
 
-At **DreamzPrint**, we blend cutting-edge AI technology with premium-quality printing to create a seamless, innovative, and personalized shopping experience. Let us introduce you to how we’re transforming custom printing with our AI-powered tools and outstanding services.  
+At **DreamzPrint**, we blend cutting-edge AI technology with premium-quality printing to create a seamless, innovative, and personalized shopping experience. Let us introduce you to how we’re transforming custom printing with our AI-powered tools and outstanding services.
 
 ---
 

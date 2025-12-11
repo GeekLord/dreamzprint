@@ -42,7 +42,8 @@ export default defineConfig(({ command }) => ({
   server: {
     port: 12000,
     strictPort: false,
-    host: true
+    host: true,
+    allowedHosts: true,
   },
   preview: {
     port: 12000,

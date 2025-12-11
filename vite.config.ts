@@ -41,12 +41,12 @@ export default defineConfig(({ command }) => ({
   base: '/',
   server: {
     port: 12000,
-    strictPort: true,
+    strictPort: false,
     host: true
   },
   preview: {
     port: 12000,
-    strictPort: true,
+    strictPort: false,
     host: true
   }
 }));
